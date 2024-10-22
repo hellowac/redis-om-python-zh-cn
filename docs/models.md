@@ -1,26 +1,20 @@
-# Models and Fields
+# 模型和字段
 
-The heart of Redis OM's object mapping, validation, and querying features is a
-pair of declarative models: `HashModel` and `JsonModel`. Both models work
-provide roughly the same API, but they store data in Redis differently.
+Redis OM 对象映射、验证和查询功能的核心是一对声明性模型：`HashModel` 和 `JsonModel`。这两个模型提供大致相同的 API，但它们在 Redis 中存储数据的方式不同。
 
-This page will explain how to create your Redis OM model by subclassing one of
-these classes.
+本页将解释如何通过子类化这些类之一来创建您的 Redis OM 模型。
 
-## HashModel vs. JsonModel
+## HashModel 与 JsonModel
 
-First, which should you use?
+首先，您应该使用哪个？
 
-The choice is relatively simple. If you want to embed a model inside another
-model, like giving a `Customer` model a list of `Order` models, then you need to
-use `JsonModel`. Only `JsonModel` supports embedded models.
+选择相对简单。如果您想将一个模型嵌入到另一个模型中，比如将一个 `Customer` 模型与一个 `Order` 模型列表关联，那么您需要使用 `JsonModel`。只有 `JsonModel` 支持嵌入模型。
 
-Otherwise, use `HashModel`.
+否则，使用 `HashModel`。
 
-## Creating Your Model
+## 创建您的模型
 
-You create a Redis OM model by subclassing `HashModel` or `JsonModel`. For
-example:
+您可以通过子类化 `HashModel` 或 `JsonModel` 来创建 Redis OM 模型。例如：
 
 ```python
 from redis_om import HashModel
@@ -31,12 +25,11 @@ class Customer(HashModel):
     last_name: str
 ```
 
-## Configuring Models
+## 配置模型
 
-There are several Redis OM-specific settings you can configure in models. You
-configure these settings using a special object called the _Meta object_.
+您可以在模型中配置多个特定于 Redis OM 的设置。您可以使用一个称为 _Meta 对象_ 的特殊对象来配置这些设置。
 
-Here is an example of using the Meta object to set a global key prefix:
+以下是使用 Meta 对象设置全局键前缀的示例：
 
 ```python
 from redis_om import HashModel
@@ -50,15 +43,11 @@ class Customer(HashModel):
         global_key_prefix = "customer-dashboard"
 ```
 
-## Abstract Models
+## 抽象模型
 
-You can create abstract Redis OM models by subclassing `ABC` in addition to
-either `HashModel` or `JsonModel`. Abstract models exist only to gather shared
-configuration for subclasses -- you can't instantiate them.
+您可以通过在 `HashModel` 或 `JsonModel` 之上子类化 `ABC` 来创建抽象 Redis OM 模型。抽象模型仅存在于为子类收集共享配置的目的——您无法实例化它们。
 
-One use of abstract models is to configure a Redis key prefix that all models in
-your application will use. This is a good best practice with Redis. Here's how
-you'd do it with an abstract model:
+抽象模型的一个用途是配置应用程序中所有模型都将使用的 Redis 键前缀。这是与 Redis 的一个良好最佳实践。以下是使用抽象模型的方法：
 
 ```python
 from abc import ABC
@@ -71,13 +60,13 @@ class BaseModel(HashModel, ABC):
         global_key_prefix = "your-application"
 ```
 
-### The Meta Object Is "Special"
+### Meta 对象是“特殊的”
 
-The Meta object has a special property: if you create a model subclass from a base class that has a Meta object, Redis OM copies the parent's fields into the Meta object in the child class.
+Meta 对象有一个特殊的属性：如果您从具有 Meta 对象的基类创建模型子类，Redis OM 会将父类的字段复制到子类的 Meta 对象中。
 
-Because of this, a subclass can override a single field in its parent's Meta class without having to redefine all fields.
+因此，子类可以在其父类的 Meta 类中重写单个字段，而无需重新定义所有字段。
 
-An example will make this clearer:
+一个示例将使这一点更加清晰：
 
 ```python
 from abc import ABC
@@ -107,40 +96,41 @@ print(Customer.global_key_prefix)
 # > "customer-dashboard"
 ```
 
-In this example, we created an abstract base model called `BaseModel` and gave it a Meta object containing a database connection and a global key prefix.
+在这个例子中，我们创建了一个名为 `BaseModel` 的抽象基模型，并为其提供了一个包含数据库连接和全局键前缀的 Meta 对象。
 
-Then we created a subclass `BaseModel` called `Customer` and gave it a second Meta object, but only defined `database`. `Customer` _also gets the global key prefix_ that `BaseModel` defined ("customer-dashboard").
+然后我们创建了一个名为 `Customer` 的 `BaseModel` 子类，并为其提供了第二个 Meta 对象，但只定义了 `database`。`Customer` _也获得了 `BaseModel` 定义的全局键前缀_（"customer-dashboard"）。
 
-While this is not how object inheritance usually works in Python, we think it is helpful to make abstract models more useful, especially as a way to group shared model settings.
+虽然这与 Python 中通常的对象继承方式不同，但我们认为这有助于使抽象模型更有用，尤其是作为分组共享模型设置的一种方式。
 
-### All Settings Supported by the Meta Object
+### Meta 对象支持的所有设置
 
-Here is a table of the settings available in the Meta object and what they control.
+以下是 Meta 对象中可用设置及其控制内容的表格。
 
-| Setting                 | Description                                                                                                                                                                                                                                                 | Default                                                         |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| global_key_prefix       | A string prefix applied to every Redis key that the model manages. This could be something like your application's name.                                                                                                                                    | ""                                                              |
-| model_key_prefix        | A string prefix applied to the Redis key representing every model. For example, the Redis Hash key for a HashModel. This prefix is also added to the redisearch index created for every model with indexed fields.                                          | f"{new_class.__module__}.{new_class.__name__}"                                                              |
-| primary_key_pattern     | A format string producing the base string for a Redis key representing this model. This string should accept a "pk" format argument. **Note:** This is a "new style" format string, which will be called with `.format()`.                                  | "{pk}"                                                           |
-| database                | A redis.asyncio.Redis or redis.Redis client instance that the model will use to communicate with Redis.                                                                                                                                                         | A new instance created with connections.get_redis_connection(). |
-| primary_key_creator_cls | A class that adheres to the PrimaryKeyCreator protocol, which Redis OM will use to create a primary key for a new model instance.                                                                                                                           | UlidPrimaryKey                                                  |
-| index_name              | The RediSearch index name to use for this model. Only used if at least one of the model's fields are marked as indexable (`index=True`).                                                                                                                    | "{global_key_prefix}:{model_key_prefix}:index"                  |
-| embedded                | Whether or not this model is "embedded." Embedded models are not included in migrations that create and destroy indexes. Instead, their indexed fields are included in the index for the parent model. **Note**: Only `JsonModel` can have embedded models. | False                                                           |
-| encoding                | The default encoding to use for strings. This encoding is given to redis-py at the connection level. In both cases, Redis OM will decode binary strings from Redis using your chosen encoding.                                                  | "utf-8"                                                         |
-## Configuring Pydantic
+| 设置                    | 描述                                                                                                                                                      | 默认值                                                 |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| global_key_prefix       | 应用于模型管理的每个 Redis 键的字符串前缀。这可以是您应用程序的名称。                                                                                     | ""                                                     |
+| model_key_prefix        | 应用于表示每个模型的 Redis 键的字符串前缀。例如，HashModel 的 Redis Hash 键。此前缀也会添加到为每个具有索引字段的模型创建的 redisearch 索引中。           | f"{new_class.__module__}.{new_class.__name__}"         |
+| primary_key_pattern     | 生成表示此模型的 Redis 键的基础字符串的格式字符串。此字符串应接受一个 "pk" 格式参数。**注意：**这是一个“新风格”的格式字符串，将通过 `.format()` 调用。    | "{pk}"                                                 |
+| database                | 模型将用于与 Redis 通信的 redis.asyncio.Redis 或 redis.Redis 客户端实例。                                                                                 | 使用 connections.get_redis_connection() 创建的新实例。 |
+| primary_key_creator_cls | 遵循 PrimaryKeyCreator 协议的类，Redis OM 将使用该类为新的模型实例创建主键。                                                                              | UlidPrimaryKey                                         |
+| index_name              | 此模型使用的 RediSearch 索引名称。仅在至少一个模型的字段被标记为可索引（`index=True`）时使用。                                                            | "{global_key_prefix}:{model_key_prefix}:index"         |
+| embedded                | 此模型是否为“嵌入式”。嵌入式模型不包括在创建和销毁索引的迁移中。相反，它们的索引字段包含在父模型的索引中。**注意**：只有 `JsonModel` 可以拥有嵌入式模型。 | False                                                  |
+| encoding                | 用于字符串的默认编码。此编码在连接级别传递给 redis-py。在这两种情况下，Redis OM 将使用您选择的编码解码来自 Redis 的二进制字符串。                         | "utf-8"                                                |
 
-Every Redis OM model is also a Pydantic model, so in addition to configuring Redis OM behavior with the Meta object, you can control Pydantic configuration via the Config object within a model class.
+## 配置 Pydantic
 
-See the [Pydantic documentation for details](https://pydantic-docs.helpmanual.io/usage/model_config/) on how this object works and the settings that are available.
+每个 Redis OM 模型也是一个 Pydantic 模型，因此除了使用 Meta 对象配置 Redis OM 行为外，您还可以通过模型类中的 Config 对象控制 Pydantic 配置。
 
-The default Pydantic configuration for models, which Redis OM sets for you, is equivalent to the following (demonstrated on an actual model):
+有关此对象的工作方式和可用设置的详细信息，请参阅 [Pydantic 文档](https://pydantic-docs.helpmanual.io/usage/model_config/)。
+
+Redis OM 为模型设置的默认 Pydantic 配置相当于以下内容（在实际模型上演示）：
 
 ```python
 from redis_om import HashModel
 
 
 class Customer(HashModel):
-    # ... Fields ...
+    # ... 字段 ...
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -149,39 +139,37 @@ class Customer(HashModel):
     )
 ```
 
-Some features may not work correctly if you change these settings.
+如果您更改这些设置，某些功能可能无法正常工作。
 
-## Fields
+## 字段
 
-You define fields on a Redis OM model using Python _type annotations_. If you
-aren't familiar with type annotations, check out this
-[tutorial](https://towardsdatascience.com/type-annotations-in-python-d90990b172dc).
+您可以使用 Python _类型注解_ 在 Redis OM 模型上定义字段。如果您对类型注解不熟悉，可以查看这个 [教程](https://towardsdatascience.com/type-annotations-in-python-d90990b172dc)。
 
-This works exactly the same way as it does with Pydantic. Check out the [Pydantic documentation on field types](https://pydantic-docs.helpmanual.io/usage/types/) for guidance.
+这与 Pydantic 的工作方式完全相同。有关字段类型的指导，请查看 [Pydantic 文档](https://pydantic-docs.helpmanual.io/usage/types/)。
 
-### With HashModel
+### 使用 HashModel
 
-`HashModel` stores data in Redis Hashes, which are flat. This means that a Redis Hash can't contain a Redis Set, List, or Hash. Because of this requirement, `HashModel` also does not currently support container types, such as:
+`HashModel` 将数据存储在 Redis Hash 中，结构是扁平的。这意味着 Redis Hash 不能包含 Redis Set、List 或 Hash。由于这个要求，`HashModel` 当前也不支持容器类型，例如：
 
-* Sets
-* Lists
-* Dictionaries and other "mapping" types
-* Other Redis OM models
-* Pydantic models
+* 集合
+* 列表
+* 字典和其他“映射”类型
+* 其他 Redis OM 模型
+* Pydantic 模型
 
-**NOTE**: In the future, we may serialize these values as JSON strings, the same way we do for `JsonModel`. The difference would be that in the case of `HashModel`, you wouldn't be able to index these fields, just get and save them with the model. With `JsonModel`, you can index list fields and embedded `JsonModel`s.
+**注意**：将来，我们可能会将这些值序列化为 JSON 字符串，就像我们对 `JsonModel` 所做的那样。不同之处在于，在 `HashModel` 的情况下，您将无法对这些字段进行索引，只能获取和保存它们。而在 `JsonModel` 中，您可以对列表字段和嵌入的 `JsonModel` 进行索引。
 
-So, in short, if you want to use container types, use `JsonModel`.
+因此，简而言之，如果您想使用容器类型，请使用 `JsonModel`。
 
-### With JsonModel
+### 使用 JsonModel
 
-Good news! Container types _are_ supported with `JsonModel`.
+好消息！`JsonModel` 支持容器类型。
 
-We will use Pydantic's JSON serialization and encoding to serialize your `JsonModel` and save it in Redis.
+我们将使用 Pydantic 的 JSON 序列化和编码来序列化您的 `JsonModel` 并将其保存在 Redis 中。
 
-### Default Values
+### 默认值
 
-Fields can have default values. You set them by assigning a value to a field.
+字段可以具有默认值。您通过为字段赋值来设置它们。
 
 ```python
 import datetime
@@ -196,10 +184,10 @@ class Customer(HashModel):
     email: str
     join_date: datetime.date
     age: int
-    bio: Optional[str] = "Super dope"  # <- We added a default here
+    bio: Optional[str] = "Super dope"  # <- 在这里添加了默认值
 ```
 
-Now, if we create a `Customer` object without a `bio` field, it will use the default value.
+现在，如果我们创建一个没有 `bio` 字段的 `Customer` 对象，它将使用默认值。
 
 ```python
 import datetime
@@ -222,19 +210,19 @@ andrew = Customer(
     last_name="Brookins",
     email="andrew.brookins@example.com",
     join_date=datetime.date.today(),
-    age=38)  # <- Notice, we didn't give a bio!
+    age=38)  # <- 注意，我们没有提供 bio！
 
-print(andrew.bio)  # <- So we got the default value.
+print(andrew.bio)  # <- 所以我们得到了默认值。
 # > 'Super Dope'
 ```
 
-The model will then save this default value to Redis the next time you call `save()`.
+模型将在您下次调用 `save()` 时将此默认值保存到 Redis。
 
-## Marking a Field as Indexed
+## 标记字段为索引
 
-If you're using the RediSearch module in your Redis instance, you can mark a field as "indexed." As soon as you mark any field in a model as indexed, Redis OM will automatically create and manage an secondary index for the model for you, allowing you to query on any indexed field.
+如果您在 Redis 实例中使用 RediSearch 模块，可以将字段标记为“索引”。一旦您将模型中的任何字段标记为索引，Redis OM 会自动为该模型创建和管理一个二级索引，使您能够对任何索引字段进行查询。
 
-To mark a field as indexed, you need to use the Redis OM `Field()` helper, like this:
+要将字段标记为索引，您需要使用 Redis OM 的 `Field()` 助手，如下所示：
 
 ```python
 from redis_om import (
@@ -248,20 +236,20 @@ class Customer(HashModel):
     last_name: str = Field(index=True)
 ```
 
-In this example, we marked `Customer.last_name` as indexed.
+在这个例子中，我们将 `Customer.last_name` 标记为索引。
 
-To create the indexes for any models that have indexed fields, use the `migrate` CLI command that Redis OM installs in your Python environment.
+要为具有索引字段的任何模型创建索引，请使用 Redis OM 安装在您的 Python 环境中的 `migrate` CLI 命令。
 
-This command detects any `JsonModel` or `HashModel` instances in your project and does the following for each model that isn't abstract or embedded:
+该命令会检测您项目中的任何 `JsonModel` 或 `HashModel` 实例，并对每个不是抽象或嵌入的模型执行以下操作：
 
-* If no index exists yet for the model:
-  * The migrator creates an index
-  * The migrator stores a hash of the index definition
-* If an index exists for the model:
-  * The migrator checks if the stored hash for the index is out of date
-  * If the stored hash is out of date, the migrator drops the index (not your data!) and rebuilds it with the new index definition
+* 如果模型尚未存在索引：
+  * 迁移工具创建一个索引
+  * 迁移工具存储索引定义的哈希
+* 如果模型存在索引：
+  * 迁移工具检查存储的索引哈希是否过时
+  * 如果存储的哈希过时，迁移工具会删除索引（不会删除您的数据！）并使用新的索引定义重建它
 
-You can also run the `Migrator` yourself with code:
+您也可以通过代码自行运行 `Migrator`：
 
 ```python
 from redis_om import (

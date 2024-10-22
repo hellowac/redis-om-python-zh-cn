@@ -1,68 +1,68 @@
-# Connecting to Redis
+# 连接到 Redis
 
-You can control how Redis OM connects to Redis with the `REDIS_OM_URL` environment variable, or by manually constructing Redis client objects.
+您可以通过 `REDIS_OM_URL` 环境变量控制 Redis OM 如何连接到 Redis，或者手动构造 Redis 客户端对象。
 
-## Environment Variable
+## 环境变量
 
-By default, Redis OM tries to connect to Redis on your localhost at port 6379. Most local install methods will result in Redis running at this location, in which case you don't need to do anything special for Redis OM to connect to Redis.
+默认情况下，Redis OM 尝试连接到您本地主机上的 6379 端口。大多数本地安装方法会导致 Redis 在此位置运行，在这种情况下，您无需为 Redis OM 连接 Redis 做任何特别的设置。
 
-However, if you configured Redis to run on a different port, or if you're using a remote Redis server, you'll need to set the `REDIS_OM_URL` environment variable.
+然而，如果您将 Redis 配置为在不同的端口上运行，或者如果您正在使用远程 Redis 服务器，您需要设置 `REDIS_OM_URL` 环境变量。
 
-The `REDIS_OM_URL` environment variable follows the redis-py URL format:
+`REDIS_OM_URL` 环境变量遵循 redis-py URL 格式：
 
     redis://[[username]:[password]]@localhost:6379/[database number]
 
-**NOTE:** The square brackets indicate an optional value and are not part of the URL format.
+**注意：** 方括号表示可选值，并不是 URL 格式的一部分。
 
-The default connection is equivalent to the following `REDIS_OM_URL` environment variable:
+默认连接相当于以下 `REDIS_OM_URL` 环境变量：
 
     redis://localhost:6379
 
-**Note:** Indexing only works for data stored in Redis logical database 0.  If you are using a different database number when connecting to Redis, you can expect the code to raise a `MigrationError` when you run the migrator.
+**注意：** 索引仅适用于存储在 Redis 逻辑数据库 0 中的数据。如果在连接到 Redis 时使用不同的数据库编号，您可以期待在运行迁移器时代码会引发 `MigrationError`。
 
-### Passwords and Usernames
+### 密码和用户名
 
-Redis can be configured with password protection and a "default" user, in which case you might connect using only the password.
+Redis 可以配置为密码保护和“默认”用户，在这种情况下，您可能只需使用密码连接。
 
-You can do so with Redis OM like this:
+您可以像这样使用 Redis OM：
 
     redis://:your-password@localhost:6379
 
-If your Redis instance requires both a username and a password, you would include both in the URL:
+如果您的 Redis 实例需要用户名和密码，您应在 URL 中包含两者：
 
     redis://your-username:your-password@localhost:6379
 
-### Database Number
+### 数据库编号
 
-Redis databases are numbered, and the default is 0. You can leave off the database number to use the default database, or specify it.
+Redis 数据库是编号的，默认是 0。您可以省略数据库编号以使用默认数据库，或指定它。
 
-**Note:** Indexing only works for data stored in Redis logical database 0.  If you are using a different database number when connecting to Redis, you can expect the code to raise a `MigrationError` when you run the migrator.
+**注意：** 索引仅适用于存储在 Redis 逻辑数据库 0 中的数据。如果在连接到 Redis 时使用不同的数据库编号，您可以期待在运行迁移器时代码会引发 `MigrationError`。
 
-### SSL Connections
+### SSL 连接
 
-Use the "rediss" prefix for SSL connections:
+使用“rediss”前缀进行 SSL 连接：
 
     rediss://[[username]:[password]]@localhost:6379/0
 
-### Unix Domain Sockets
+### Unix 域套接字
 
-Use the "unix" prefix to connect to Redis over Unix domain sockets:
+使用“unix”前缀通过 Unix 域套接字连接到 Redis：
 
     unix://[[username]:[password]]@/path/to/socket.sock?db=0
 
-### To Learn More
+### 了解更多
 
-To learn more about the URL format that Redis OM Python uses, consult the [redis-py URL documentation](https://redis-py.readthedocs.io/en/stable/#redis.Redis.from_url).
+要了解更多关于 Redis OM Python 使用的 URL 格式的信息，请查阅 [redis-py URL 文档](https://redis-py.readthedocs.io/en/stable/#redis.Redis.from_url)。
 
-**TIP:** The URL format is the same if you're using async or sync mode with Redis OM (i.e., importing `aredis_om` for async or `redis_om` for sync).
+**提示：** 如果您在使用异步或同步模式与 Redis OM（即，为异步导入 `aredis_om` 或为同步导入 `redis_om`），则 URL 格式是相同的。
 
-## Connection Objects
+## 连接对象
 
-Aside from controlling connections via the `REDIS_OM_URL` environment variable, you can manually construct Redis client connections for a specific OM model class.
+除了通过 `REDIS_OM_URL` 环境变量控制连接外，您还可以手动为特定的 OM 模型类构造 Redis 客户端连接。
 
-**NOTE:** This method takes precedence over the `REDIS_OM_URL` environment variable.
+**注意：** 此方法优先于 `REDIS_OM_URL` 环境变量。
 
-You can control the connection a specific model class should use by assigning an object to the *database* field of a model's _Meta_ object, like so:
+您可以通过将对象分配给模型的 _Meta_ 对象的 *database* 字段来控制特定模型类应使用的连接，如下所示：
 
 ```python
 from redis_om import HashModel, get_redis_connection
@@ -80,9 +80,9 @@ class Customer(HashModel):
         database = redis
 ```
 
-The `get_redis_connection()` function is a Redis OM helper that passes keyword arguments to either `redis.asyncio.Redis.from_url()` or `redis.Redis.from_url()`, depending on whether you are using Redis OM in async or sync mode.
+`get_redis_connection()` 函数是一个 Redis OM 辅助函数，它将关键字参数传递给 `redis.asyncio.Redis.from_url()` 或 `redis.Redis.from_url()`，具体取决于您是在异步还是同步模式下使用 Redis OM。
 
-You can also manually construct a client object:
+您还可以手动构造客户端对象：
 
 ```python
 from redis import Redis

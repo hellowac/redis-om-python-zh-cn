@@ -1,137 +1,136 @@
-# Getting Started With Redis OM
+# 入门 Redis OM
 
-## Introduction
+## 简介
 
-This tutorial will walk you through installing Redis OM, creating your first model, and using it to save and validate data.
+本教程将引导您安装 Redis OM，创建第一个模型，并使用它来保存和验证数据。
 
-## Prerequisites
+## 先决条件
 
-Redis OM requires Python version 3.8 or above and a Redis instance to connect to.
+Redis OM 需要 Python 版本 3.8 或更高版本以及一个 Redis 实例进行连接。
 
 ## Python
 
-Make sure you are running **Python version 3.8 or higher**:
+确保您正在运行 **Python 版本 3.8 或更高版本**：
 
 ```
 python --version
 Python 3.8.0
 ```
 
-If you don't have Python installed, you can download it from [Python.org](https://www.python.org/downloads/), use [pyenv](https://github.com/pyenv/pyenv), or install Python with your operating system's package manager.
+如果您尚未安装 Python，可以从 [Python.org](https://www.python.org/downloads/) 下载，使用 [pyenv](https://github.com/pyenv/pyenv)，或通过操作系统的包管理器安装 Python。
 
-This library requires [redis-py](https://pypi.org/project/redis) version 4.2.0 or higher.
+此库需要 [redis-py](https://pypi.org/project/redis) 版本 4.2.0 或更高版本。
 
 ## Redis
 
-Redis OM saves data in Redis, so you will need Redis installed and running to complete this tutorial.
+Redis OM 将数据保存在 Redis 中，因此您需要安装并运行 Redis 以完成本教程。
 
-We recommend the [redis-stack](https://hub.docker.com/r/redis/redis-stack) image because it includes Redis capabilities that this library uses to provide extra features. Later sections of this guide will provide more detail about these features.
+我们推荐使用 [redis-stack](https://hub.docker.com/r/redis/redis-stack) 镜像，因为它包含此库用来提供额外功能的 Redis 功能。指南后面的部分将提供有关这些功能的更多细节。
 
-You can also use the official Redis Docker image, which is hosted on [Docker Hub](https://hub.docker.com/_/redis).  However this does not include the Search and JSON modules required to store JSON models and use the `find` query interface.
+您也可以使用官方的 Redis Docker 镜像，该镜像托管在 [Docker Hub](https://hub.docker.com/_/redis) 上。然而，这个镜像不包括存储 JSON 模型和使用 `find` 查询接口所需的搜索和 JSON 模块。
 
-**NOTE**: We'll talk about how to actually start Redis with Docker when we discuss _running_ Redis later in this guide.
+**注意**：当我们在本指南的后面讨论如何实际启动 Redis 时，将谈到使用 Docker 启动 Redis。
 
-### Downloading Redis
+### 下载 Redis
 
-The latest version of Redis is available from [Redis.io](https://redis.io/). You can also install Redis with your operating system's package manager.
+Redis 的最新版本可从 [Redis.io](https://redis.io/) 获取。您也可以通过操作系统的包管理器安装 Redis。
 
-**NOTE:** This tutorial will guide you through starting Redis locally, but the instructions will also work if Redis is running on a remote server.
+**注意**：本教程将指导您如何在本地启动 Redis，但如果 Redis 在远程服务器上运行，这些说明也适用。
 
-### Installing Redis On Windows
+### 在 Windows 上安装 Redis
 
-Redis doesn't run directly on Windows, but you can use Windows Subsystem for Linux (WSL) to run Redis. See [our video on YouTube](https://youtu.be/_nFwPTHOMIY) for a walk-through.
+Redis 不能直接在 Windows 上运行，但您可以使用 Windows 子系统 Linux (WSL) 来运行 Redis。有关详细信息，请参阅 [我们在 YouTube 上的视频](https://youtu.be/_nFwPTHOMIY)。
 
-Windows users can also use the Docker image mentioned previously.
+Windows 用户还可以使用前面提到的 Docker 镜像。
 
-## Recommended: RediSearch and RedisJSON
+## 推荐：RediSearch 和 RedisJSON
 
-Redis OM relies on the [RediSearch][redisearch-url] and [RedisJSON][redis-json-url] Redis modules to support rich queries and embedded models.
+Redis OM 依赖 [RediSearch][redisearch-url] 和 [RedisJSON][redis-json-url] Redis 模块，以支持丰富的查询和嵌入模型。
 
-You don't need these Redis modules to use Redis OM's data modeling, validation, and persistence features, but we recommend them to get the most out of Redis OM.
+您不需要这些 Redis 模块来使用 Redis OM 的数据建模、验证和持久化功能，但我们推荐您使用它们以充分发挥 Redis OM 的优势。
 
-The easiest way to run these Redis modules during local development is to use the [redis-stack](https://hub.docker.com/r/redis/redis-stack) Docker image.
+在本地开发期间运行这些 Redis 模块的最简单方法是使用 [redis-stack](https://hub.docker.com/r/redis/redis-stack) Docker 镜像。
 
-For other installation methods, follow the "Quick Start" guides on both modules' home pages.
+有关其他安装方法，请遵循这两个模块主页上的“快速入门”指南。
 
-## Starting Redis
+## 启动 Redis
 
-Before you get started with Redis OM, make sure you start Redis.
+在开始使用 Redis OM 之前，请确保启动 Redis。
 
-The command to start Redis will depend on how you installed it.
+启动 Redis 的命令将取决于您如何安装它。
 
-### Ubuntu Linux (Including WSL)
+### Ubuntu Linux（包括 WSL）
 
-If you installed Redis using `apt`, start it with the `systemctl` command:
+如果您使用 `apt` 安装了 Redis，请使用 `systemctl` 命令启动它：
 
     $ sudo systemctl restart redis.service
 
-Otherwise, you can start the server manually:
+否则，您可以手动启动服务器：
 
     $ redis-server start
 
-### MacOS with Homebrew
+### 使用 Homebrew 的 MacOS
 
     $ brew services start redis
 
 ### Docker
 
-The command to start Redis with Docker depends on the image you've chosen to use.
+使用 Docker 启动 Redis 的命令取决于您选择使用的镜像。
 
-**TIP:** The `-d` option in these examples runs Redis in the background, while `-p 6379:6379` makes Redis reachable at port 6379 on your localhost.
+**提示：** 这些示例中的 `-d` 选项使 Redis 在后台运行，而 `-p 6379:6379` 则使 Redis 可以通过本地主机的 6379 端口访问。
 
-#### Docker with the `redismod` image (recommended)
+#### 使用 `redismod` 镜像的 Docker（推荐）
 
     $ docker run -d -p 6379:6379 redislabs/redismod
 
-### Docker with the `redis` image
+### 使用 `redis` 镜像的 Docker
 
     $ docker run -d -p 6379:6379 redis
 
-## Installing Redis OM
+## 安装 Redis OM
 
-The recommended way to install Redis OM is with [Poetry](https://python-poetry.org/docs/). You can install Redis OM using Poetry with the following command:
+安装 Redis OM 的推荐方法是使用 [Poetry](https://python-poetry.org/docs/)。您可以使用以下命令通过 Poetry 安装 Redis OM：
 
     $ poetry add redis-om
 
-If you're using Pipenv, the command is:
+如果您使用 Pipenv，则命令为：
 
     $ pipenv install redis-om
 
-Finally, you can install Redis OM with `pip` by running the following command:
+最后，您可以通过运行以下命令使用 `pip` 安装 Redis OM：
 
     $ pip install redis-om
 
-**TIP:** If you aren't using Poetry or Pipenv and are instead installing directly with `pip`, we recommend that you install Redis OM in a virtual environment (AKA, a virtualenv). If you aren't familiar with this concept, see [Dan Bader's video and transcript](https://realpython.com/lessons/creating-virtual-environment/).
+**提示：** 如果您不使用 Poetry 或 Pipenv，而是直接使用 `pip` 安装，建议您在虚拟环境（即 virtualenv）中安装 Redis OM。如果您对这个概念不熟悉，请参阅 [Dan Bader 的视频和文字记录](https://realpython.com/lessons/creating-virtual-environment/)。
 
+## 设置 Redis URL 环境变量
 
-## Setting the Redis URL Environment Variable
+我们快要准备好创建 Redis OM 模型了！但首先，我们需要确保 Redis OM 知道如何连接到 Redis。
 
-We're almost ready to create a Redis OM model! But first, we need to make sure that Redis OM knows how to connect to Redis.
+默认情况下，Redis OM 尝试连接到您本地主机的 6379 端口。大多数本地安装方法会导致 Redis 运行在这个位置，在这种情况下您无需做任何特别的事情。
 
-By default, Redis OM tries to connect to Redis on your localhost at port 6379. Most local install methods will result in Redis running at this location, in which case you don't need to do anything special.
+然而，如果您将 Redis 配置为在不同的端口上运行，或者您正在使用远程 Redis 服务器，则需要设置 `REDIS_OM_URL` 环境变量。
 
-However, if you configured Redis to run on a different port, or if you're using a remote Redis server, you'll need to set the `REDIS_OM_URL` environment variable.
-
-The `REDIS_OM_URL` environment variable follows the redis-py URL format:
+`REDIS_OM_URL` 环境变量遵循 redis-py URL 格式：
 
     redis://[[username]:[password]]@localhost:6379/[database number]
 
-The default connection is equivalent to the following `REDIS_OM_URL` environment variable:
+默认连接相当于以下 `REDIS_OM_URL` 环境变量：
 
     redis://@localhost:6379
 
-**TIP:** Redis databases are numbered, and the default is 0. You can leave off the database number to use the default database.
+**提示：** Redis 数据库是编号的，默认值为 0。您可以省略数据库编号以使用默认数据库。
 
-**Note:** Indexing only works for data stored in Redis logical database 0.  If you are using a different database number when connecting to Redis, you can expect the code to raise a `MigrationError` when you run the migrator.
+**注意：** 索引仅适用于存储在 Redis 逻辑数据库 0 中的数据。如果在连接到 Redis 时使用不同的数据库编号，您可以预期代码在运行迁移器时会引发 `MigrationError`。
 
-Other supported prefixes include "rediss" for SSL connections and "unix" for Unix domain sockets:
+其他支持的前缀包括 "rediss" 用于 SSL 连接和 "unix" 用于 Unix 域套接字：
 
     rediss://[[username]:[password]]@localhost:6379/0
     unix://[[username]:[password]]@/path/to/socket.sock?db=0
 
-## Defining a Model
+## 定义模型
 
-In this tutorial, we'll create a `Customer` model that validates and saves data. Let's start with a basic definition of the model. We'll add features as we go along.
+在本教程中，我们将创建一个 `Customer` 模型，用于验证和保存数据。让我们从模型的基本定义开始。我们将逐步添加功能。
 
 ```python
 import datetime
@@ -148,36 +147,36 @@ class Customer(HashModel):
     bio: str
 ```
 
-There are a few details to note:
+有几个细节需要注意：
 
-1. Our `Customer` model extends the `HashModel` class. This means that it will be saved to Redis as a hash. The other model class that Redis OM provides is `JsonModel`, which we'll discuss later.
-2. We've specified the model's fields using Python type annotations.
+1. 我们的 `Customer` 模型扩展了 `HashModel` 类。这意味着它将作为哈希保存到 Redis。Redis OM 提供的另一个模型类是 `JsonModel`，稍后我们会讨论。
+2. 我们使用 Python 类型注解指定了模型的字段。
 
-Let's dig into the `HashModel` class and type annotations a bit more.
+让我们更深入地了解一下 `HashModel` 类和类型注解。
 
-### The HashModel Class
+### HashModel 类
 
-When you subclass `HashModel`, your subclass is both a Redis OM model, with methods for saving data to Redis, *and* a Pydantic model.
+当您对 `HashModel` 进行子类化时，您的子类既是 Redis OM 模型，具有将数据保存到 Redis 的方法，同时也是 Pydantic 模型。
 
-This means that you can use Pydantic field validations with your Redis OM models, which we'll cover later, when we talk about validation. But this also means you can use Redis OM models anywhere you would use a Pydantic model, like in your FastAPI applications. 🤯
+这意味着您可以在 Redis OM 模型中使用 Pydantic 字段验证，我们将在后面讨论验证时涵盖这一点。但这也意味着您可以在任何需要使用 Pydantic 模型的地方使用 Redis OM 模型，比如在您的 FastAPI 应用程序中。🤯
 
-### Type Annotations
+### 类型注解
 
-The type annotations you add to your model fields are used for a few purposes:
+您添加到模型字段的类型注解用于几个目的：
 
-* Validating data with Pydantic validators
-* Serializing data Redis
-* Deserializing data from Redis
+* 使用 Pydantic 验证器验证数据
+* 序列化数据到 Redis
+* 从 Redis 反序列化数据
 
-We'll see examples of these throughout the course of this tutorial.
+在本教程的过程中，我们将看到这些用途的示例。
 
-An important detail about the `HashModel` class is that it does not support `list`, `set`, or mapping (like `dict`) types. This is because Redis hashes cannot contain lists, sets, or other hashes.
+关于 `HashModel` 类的一个重要细节是，它不支持 `list`、`set` 或映射（如 `dict`）类型。这是因为 Redis 哈希不能包含列表、集合或其他哈希。
 
-If you want to model fields with a list, set, or mapping type, or another model, you'll need to use the `JsonModel` class, which can support these types, as well as embedded models.
+如果您想建模带有列表、集合或映射类型的字段，或者其他模型，您需要使用 `JsonModel` 类，它可以支持这些类型以及嵌入模型。
 
-## Creating Models
+## 创建模型
 
-Let's see what creating a model object looks like:
+让我们看看创建模型对象的样子：
 
 ```python
 import datetime
@@ -204,9 +203,9 @@ andrew = Customer(
 )
 ```
 
-### Optional Fields
+### 可选字段
 
-What would happen if we left out one of these fields, like `bio`?
+如果我们省略了其中一个字段，比如 `bio`，会发生什么呢？
 
 ```python
 import datetime
@@ -224,15 +223,15 @@ class Customer(HashModel):
     bio: str
 
 
-# All fields are required because none of the fields
-# are marked `Optional`, so we get a validation error:
+# 所有字段都是必需的，因为没有任何字段
+# 被标记为 `Optional`，所以我们会得到一个验证错误：
 try:
     Customer(
         first_name="Andrew",
         last_name="Brookins",
         email="andrew.brookins@example.com",
         join_date=datetime.date.today(),
-        age=38  # <- We didn't pass in a bio!
+        age=38  # <- 我们没有传入 bio！
     )
 except ValidationError as e:
     print(e)
@@ -243,7 +242,7 @@ except ValidationError as e:
     """
 ```
 
-If we want the `bio` field to be optional, we need to change the type annotation to use `Optional`.
+如果我们希望 `bio` 字段是可选的，我们需要将类型注释更改为使用 `Optional`。
 
 ```python
 import datetime
@@ -258,14 +257,14 @@ class Customer(HashModel):
     email: str
     join_date: datetime.date
     age: int
-    bio: Optional[str]  # <- Now, bio is an Optional[str]
+    bio: Optional[str]  # <- 现在，bio 是一个 Optional[str]
 ```
 
-Now we can create `Customer` objects with or without the `bio` field.
+现在我们可以创建有或没有 `bio` 字段的 `Customer` 对象。
 
-### Default Values
+### 默认值
 
-Fields can have default values. You set them by assigning a value to a field.
+字段可以有默认值。您可以通过给字段赋值来设置它们。
 
 ```python
 import datetime
@@ -280,10 +279,10 @@ class Customer(HashModel):
     email: str
     join_date: datetime.date
     age: int
-    bio: Optional[str] = "Super dope"  # <- We added a default here
+    bio: Optional[str] = "Super dope"  # <- 我们在这里添加了默认值
 ```
 
-Now, if we create a `Customer` object without a `bio` field, it will use the default value.
+现在，如果我们创建一个没有 `bio` 字段的 `Customer` 对象，它将使用默认值。
 
 ```python
 import datetime
@@ -306,17 +305,17 @@ andrew = Customer(
     last_name="Brookins",
     email="andrew.brookins@example.com",
     join_date=datetime.date.today(),
-    age=38)  # <- Notice, we didn't give a bio!
+    age=38)  # <- 注意，我们没有提供 bio！
 
-print(andrew.bio)  # <- So we got the default value.
+print(andrew.bio)  # <- 所以我们得到了默认值。
 # > 'Super Dope'
 ```
 
-The model will then save this default value to Redis the next time you call `save()`.
+模型将在您下次调用 `save()` 时将此默认值保存到 Redis。
 
-### Automatic Primary Keys
+### 自动主键
 
-Models generate a globally unique primary key automatically without needing to talk to Redis.
+模型会自动生成一个全球唯一的主键，而无需与 Redis 进行通信。
 
 ```python
 import datetime
@@ -345,19 +344,19 @@ print(andrew.pk)
 # > '01FJM6PH661HCNNRC884H6K30C'
 ```
 
-The ID is available *before* you save the model.
+ID 在您保存模型之前就可用。
 
-The default ID generation function creates [ULIDs](https://github.com/ulid/spec), though you can change the function that generates the primary key for models if you'd like to use a different kind of primary key.
+默认的 ID 生成函数会创建 [ULIDs](https://github.com/ulid/spec)，不过如果您想使用不同类型的主键，可以更改生成模型主键的函数。
 
-## Validating Data
+## 数据验证
 
-Redis OM uses [Pydantic][pydantic-url] to validate data based on the type annotations you assign to fields in a model class.
+Redis OM 使用 [Pydantic][pydantic-url] 根据您为模型类字段分配的类型注释来验证数据。
 
-This validation ensures that fields like `first_name`, which the `Customer` model marked as a `str`, are always strings. **But every Redis OM model is also a Pydantic model**, so you can use Pydantic validators like `EmailStr`, `Pattern`, and many more for complex validations!
+这种验证确保像 `first_name` 这样的字段在 `Customer` 模型中标记为 `str` 时始终为字符串。**但每个 Redis OM 模型也是 Pydantic 模型**，因此您可以使用 Pydantic 验证器，如 `EmailStr`、`Pattern` 等进行复杂验证！
 
-For example, we defined the `join_date` for our `Customer` model earlier as a `datetime.date`. So, if we try to create a model with a `join_date` that isn't a date, we'll get a validation error.
+例如，我们之前将 `Customer` 模型的 `join_date` 定义为 `datetime.date`。因此，如果我们尝试创建一个 `join_date` 不是日期的模型，我们将得到一个验证错误。
 
-Let's try it now:
+让我们现在尝试一下：
 
 ```python
 import datetime
@@ -381,7 +380,7 @@ try:
         first_name="Andrew",
         last_name="Brookins",
         email="a@example.com",
-        join_date="not a date!",  # <- The problem line!
+        join_date="not a date!",  # <- 问题所在行！
         age=38
     )
 except ValidationError as e:
@@ -393,9 +392,9 @@ except ValidationError as e:
     """
 ```
 
-### Models Coerce Values By Default
+### 模型默认强制转换值
 
-You might wonder what qualifies as a "date" in our last validation example. By default, Redis OM will try to coerce input values to the correct type. That means we can pass a date string for `join_date` instead of a `date` object:
+您可能会想，在我们上一个验证示例中，什么算作“日期”。默认情况下，Redis OM 会尝试将输入值强制转换为正确的类型。这意味着我们可以将日期字符串传递给 `join_date`，而不必传递 `date` 对象：
 
 ```python
 import datetime
@@ -415,29 +414,29 @@ andrew = Customer(
     first_name="Andrew",
     last_name="Brookins",
     email="a@example.com",
-    join_date="2020-01-02",  # <- We're passing a YYYY-MM-DD date string now
+    join_date="2020-01-02",  # <- 我们现在传递的是 YYYY-MM-DD 日期字符串
     age=38
 )
 
 print(andrew.join_date)
 # > 2021-11-02
 type(andrew.join_date)
-# > datetime.date  # The model parsed the string automatically!
+# > datetime.date  # 模型自动解析了字符串！
 ```
 
-This ability to combine parsing (in this case, a date string) with validation can save you a lot of work.
+这种将解析（在此情况下为日期字符串）与验证相结合的能力可以为您节省很多工作。
 
-However, you can turn off coercion -- check the next section on using strict validation.
+然而，您可以关闭强制转换——请查看下一节关于使用严格验证的内容。
 
-### Strict Validation
+### 严格验证
 
-You can turn on strict validation to reject values for a field unless they match the exact type of the model's type annotations.
+您可以开启严格验证，以拒绝字段的值，除非它们与模型的类型注释完全匹配。
 
-You do this by changing a field's type annotation to use one of the ["strict" types provided by Pydantic](https://pydantic-docs.helpmanual.io/usage/types/#strict-types).
+您可以通过将字段的类型注释更改为使用 Pydantic 提供的 ["严格" 类型](https://pydantic-docs.helpmanual.io/usage/types/#strict-types) 来实现这一点。
 
-Redis OM supports all of Pydantic's strict types: `StrictStr`, `StrictBytes`, `StrictInt`, `StrictFloat`, and `StrictBool`.
+Redis OM 支持 Pydantic 的所有严格类型：`StrictStr`、`StrictBytes`、`StrictInt`、`StrictFloat` 和 `StrictBool`。
 
-If we wanted to make sure that the `age` field only accepts integers and doesn't try to parse a string containing an integer, like "1", we'd use the `StrictInt` class.
+如果我们想确保 `age` 字段仅接受整数，并且不尝试解析包含整数的字符串，例如 "1"，我们将使用 `StrictInt` 类。
 
 ```python
 import datetime
@@ -452,19 +451,19 @@ class Customer(HashModel):
     last_name: str
     email: str
     join_date: datetime.date
-    age: StrictInt  # <- Instead of int, we use StrictInt
+    age: StrictInt  # <- 这里使用 StrictInt 而不是 int
     bio: Optional[str]
 
 
-# Now if we use a string instead of an integer for `age`,
-# we get a validation error:
+# 现在如果我们对 `age` 使用字符串而不是整数，
+# 我们将得到一个验证错误：
 try:
     Customer(
         first_name="Andrew",
         last_name="Brookins",
         email="a@example.com",
         join_date="2020-01-02",
-        age="38"  # <- Age as a string shouldn't work now!
+        age="38"  # <- 字符串类型的年龄现在不应该有效！
     )
 except ValidationError as e:
     print(e)
@@ -475,7 +474,7 @@ except ValidationError as e:
     """
 ```
 
-Pydantic doesn't include a `StrictDate` class, but we can create our own. In this example, we create a `StrictDate` type that we'll use to validate that `join_date` is a `datetime.date` object.
+Pydantic 不包含 `StrictDate` 类，但我们可以自己创建。在这个例子中，我们创建一个 `StrictDate` 类型，用于验证 `join_date` 是一个 `datetime.date` 对象。
 
 ```python
 import datetime
@@ -506,14 +505,14 @@ class Customer(HashModel):
     bio: Optional[str]
 
 
-# Now if we use a string instead of a date object for `join_date`,
-# we get a validation error:
+# 现在如果我们对 `join_date` 使用字符串而不是日期对象，
+# 我们将得到一个验证错误：
 try:
     Customer(
         first_name="Andrew",
         last_name="Brookins",
         email="a@example.com",
-        join_date="2020-01-02",  # <- A string shouldn't work now!
+        join_date="2020-01-02",  # <- 字符串现在不应该有效！
         age="38"
     )
 except ValidationError as e:
@@ -525,9 +524,9 @@ except ValidationError as e:
     """
 ```
 
-## Saving Models
+## 保存模型
 
-We can save the model to Redis by calling `save()`:
+我们可以通过调用 `save()` 将模型保存到 Redis：
 
 ```python
 import datetime
@@ -553,24 +552,24 @@ andrew = Customer(
 andrew.save()
 ```
 
-## Expiring Models
+## 过期模型
 
-We can expire an instance of a model using `expire`, and passing it the number of seconds after which we want the instance to expire in Redis:
+我们可以使用 `expire` 方法让模型实例过期，并传入希望实例在 Redis 中过期的秒数：
 
 ```python
-# Expire Andrew in 2 minutes (120 seconds)
+# 让 Andrew 在 2 分钟（120 秒）后过期
 andrew.expire(120)
 ```
 
-## Examining Your Data In Redis
+## 在 Redis 中检查数据
 
-You can view the data stored in Redis for any Redis OM model.
+您可以查看存储在 Redis 中的任何 Redis OM 模型的数据。
 
-First, get the key of a model instance you want to inspect. The `key()` method will give you the exact Redis key used to store the model.
+首先，获取您想要检查的模型实例的键。`key()` 方法将为您提供用于存储模型的确切 Redis 键。
 
-**NOTE:** The naming of this method may be confusing. This is not the primary key, but is instead the Redis key for this model. For this reason, the method name may change.
+**注意：** 这个方法的命名可能会让人困惑。这不是主键，而是该模型的 Redis 键。因此，方法名称可能会有所更改。
 
-In this example, we're looking at the key created for the `Customer` model we've been building:
+在这个例子中，我们查看我们正在构建的 `Customer` 模型的键：
 
 ```python
 import datetime
@@ -600,10 +599,10 @@ andrew.key()
 # > 'mymodel.Customer:01FKGX1DFEV9Z2XKF59WQ6DC9T'
 ```
 
-With the model's Redis key, you can start `redis-cli` and inspect the data stored under that key. Here, we run `JSON.GET` command with `redis-cli` using the running "redis" container that this project's Docker Compose file defines:
+有了模型的 Redis 键，您可以启动 `redis-cli` 并检查该键下存储的数据。在这里，我们使用正在运行的 "redis" 容器运行 `JSON.GET` 命令，该容器由此项目的 Docker Compose 文件定义：
 
 ```
-$ docker compose exec -T redis redis-cli HGETALL mymodel.Customer:01FKGX1DFEV9Z2XKF59WQ6DC9r
+$ docker compose exec -T redis redis-cli HGETALL mymodel.Customer:01FKGX1DFEV9Z2XKF59WQ6DC9T
 
  1) "pk"
  2) "01FKGX1DFEV9Z2XKF59WQ6DC9T"
@@ -621,9 +620,9 @@ $ docker compose exec -T redis redis-cli HGETALL mymodel.Customer:01FKGX1DFEV9Z2
 14) "Super dope"
 ```
 
-## Getting a Model
+## 获取模型
 
-If you have the primary key of a model, you can call the `get()` method on the model class to get the model's data.
+如果您有模型的主键，可以在模型类上调用 `get()` 方法来获取模型的数据。
 
 ```python
 import datetime
@@ -653,11 +652,11 @@ andrew.save()
 assert Customer.get(andrew.pk) == andrew
 ```
 
-## Querying for Models With Expressions
+## 使用表达式查询模型
 
-Redis OM comes with a rich query language that allows you to query Redis with Python expressions.
+Redis OM 提供了一种丰富的查询语言，允许您使用 Python 表达式查询 Redis。
 
-To show how this works, we'll make a small change to the `Customer` model we defined earlier. We'll add `Field(index=True)` to tell Redis OM that we want to index the `last_name` and `age` fields:
+为了展示这一点，我们将对之前定义的 `Customer` 模型做一个小改动。我们将添加 `Field(index=True)`，以告诉 Redis OM 我们希望为 `last_name` 和 `age` 字段建立索引：
 
 ```python
 import datetime
@@ -681,31 +680,28 @@ class Customer(HashModel):
     bio: Optional[str]
 
 
-# Now, if we use this model with a Redis deployment that has the
-# RediSearch module installed, we can run queries like the following.
+# 现在，如果我们在安装了 RediSearch 模块的 Redis 部署中使用此模型，
+# 我们可以运行如下查询。
 
-# Before running queries, we need to run migrations to set up the
-# indexes that Redis OM will use. You can also use the `migrate`
-# CLI tool for this!
+# 在运行查询之前，我们需要运行迁移，以设置 Redis OM 将使用的索引。
+# 您也可以使用 `migrate` CLI 工具来实现这一点！
 Migrator().run()
 
-# Find all customers with the last name "Brookins"
+# 查找所有姓 "Brookins" 的客户
 Customer.find(Customer.last_name == "Brookins").all()
 
-# Find all customers that do NOT have the last name "Brookins"
+# 查找所有不姓 "Brookins" 的客户
 Customer.find(Customer.last_name != "Brookins").all()
 
-# Find all customers whose last name is "Brookins" OR whose age is
-# 100 AND whose last name is "Smith"
+# 查找所有姓 "Brookins" 或者年龄为 100 且姓 "Smith" 的客户
 Customer.find((Customer.last_name == "Brookins") | (
         Customer.age == 100
 ) & (Customer.last_name == "Smith")).all()
 ```
 
-### Saving and querying Boolean values
+### 保存和查询布尔值
 
-For historical reasons, saving and querying Boolean values is not supported in `HashModels`, however in JSON models,
-you may store and query Boolean values using the `==` syntax:
+由于历史原因，`HashModels` 不支持保存和查询布尔值。然而，在 JSON 模型中，您可以使用 `==` 语法存储和查询布尔值：
 
 ```python
 from redis_om import (
@@ -723,9 +719,9 @@ d.save()
 res = Demo.find(Demo.b == True)
 ```
 
-## Calling Other Redis Commands
+## 调用其他 Redis 命令
 
-Sometimes you'll need to run a Redis command directly.  Redis OM supports this through the `db` method on your model's class.  This returns a connected Redis client instance which exposes a function named for each Redis command.  For example, let's perform some basic set operations:
+有时您需要直接运行 Redis 命令。Redis OM 通过模型类上的 `db` 方法支持这一点。它返回一个已连接的 Redis 客户端实例，该实例为每个 Redis 命令提供一个命名函数。例如，让我们执行一些基本的集合操作：
 
 ```python
 from redis_om import HashModel
@@ -737,16 +733,16 @@ redis_conn = Demo.db()
 
 redis_conn.sadd("myset", "a", "b", "c", "d")
 
-# Prints False
+# 输出 False
 print(redis_conn.sismember("myset", "e"))
 
-# Prints True
+# 输出 True
 print(redis_conn.sismember("myset", "b"))
 ```
 
-The parameters expected by each command function are those documented on the command's page on [redis.io](https://redis.io/commands/).
+每个命令函数预期的参数与 [redis.io](https://redis.io/commands/) 上命令页面中记录的参数相同。
 
-If you don't want to get a Redis connection from a model class, you can also use `get_redis_connection`:
+如果您不想从模型类获取 Redis 连接，您还可以使用 `get_redis_connection`：
 
 ```python
 from redis_om import get_redis_connection
@@ -755,11 +751,11 @@ redis_conn = get_redis_connection()
 redis_conn.set("hello", "world")
 ```
 
-## Next Steps
+## 下一步
 
-Now that you know the basics of working with Redis OM, start playing around with it in your project!
+现在您已经了解了使用 Redis OM 的基础知识，可以在您的项目中开始尝试它！
 
-If you're a FastAPI user, check out [how to integrate Redis OM with FastAPI](https://github.com/redis/redis-om-python/blob/main/docs/fastapi_integration.md).
+如果您是 FastAPI 用户，请查看 [如何将 Redis OM 集成到 FastAPI 中](fastapi_integration.md)。
 
 <!-- Links -->
 

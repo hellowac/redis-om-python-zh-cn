@@ -1,30 +1,30 @@
-# Redis Modules
+# Redis 模块
 
-Some advanced features of Redis OM, like rich query expressions and saving data as JSON, rely on core features from two source available Redis modules: **RediSearch** and **RedisJSON**.
+Redis OM 的一些高级功能，如丰富的查询表达式和以 JSON 格式保存数据，依赖于两个可用的 Redis 模块的核心功能：**RediSearch** 和 **RedisJSON**。
 
-These modules are the "magic" behind the scenes:
+这些模块是幕后“魔法”的源泉：
 
-* RediSearch adds querying, indexing, and full-text search to Redis
-* RedisJSON adds the JSON data type to Redis
+* RediSearch 为 Redis 添加了查询、索引和全文搜索功能
+* RedisJSON 为 Redis 添加了 JSON 数据类型
 
-## Why this is important
+## 为什么这很重要
 
-Without RediSearch or RedisJSON installed, you can still use Redis OM to create declarative models backed by Redis.
+如果没有安装 RediSearch 或 RedisJSON，您仍然可以使用 Redis OM 创建由 Redis 支持的声明式模型。
 
-We'll store your model data in Redis as Hashes, and you can retrieve models using their primary keys. You'll also get all the validation features from Pydantic.
+我们将您的模型数据作为 Hash 存储在 Redis 中，您可以使用主键检索模型。您还将获得 Pydantic 的所有验证功能。
 
-So, what won't work without these modules?
+那么，没有这些模块，什么将无法工作？
 
-1. Without RedisJSON, you won't be able to nest models inside each other, like we did with the example model of a `Customer` model that has an `Address` embedded inside it.
-2. Without RediSearch, you won't be able to use our expressive queries to find models -- just primary keys.
+1. 没有 RedisJSON，您将无法将模型嵌套在一起，例如我们在 `Customer` 模型中嵌入 `Address` 的示例模型。
+2. 没有 RediSearch，您将无法使用我们的表达式查询找到模型——只能使用主键。
 
-## So how do you get RediSearch and RedisJSON?
+## 那么如何获取 RediSearch 和 RedisJSON？
 
-You can use RediSearch and RedisJSON with your self-hosted Redis deployment. Just follow the instructions on installing the binary versions of the modules in their Quick Start Guides:
+您可以在自托管的 Redis 部署中使用 RediSearch 和 RedisJSON。只需按照它们的快速入门指南中的说明安装模块的二进制版本：
 
-- [RedisJSON Quick Start - Running Binaries](https://redis.io/docs/stack/json/)
-- [RediSearch Quick Start - Running Binaries](https://redis.io/docs/stack/search/quick_start/)
+- [RedisJSON 快速入门 - 运行二进制文件](https://redis.io/docs/stack/json/)
+- [RediSearch 快速入门 - 运行二进制文件](https://redis.io/docs/stack/search/quick_start/)
 
-**NOTE**: Both of these modules' Quick Start Guides also have instructions on how to run the modules in Redis with Docker.
+**注意**：这两个模块的快速入门指南中也有关于如何使用 Docker 在 Redis 中运行这些模块的说明。
 
-Don't want to run Redis yourself? RediSearch and RedisJSON are also available on Redis Cloud. [Get started here.](https://redis.com/try-free/)
+不想自己运行 Redis？RediSearch 和 RedisJSON 也可以在 Redis Cloud 上使用。 [在这里开始。](https://redis.com/try-free/)

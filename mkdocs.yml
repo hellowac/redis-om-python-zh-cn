@@ -1,0 +1,53 @@
+site_name: redis-om-python-zh-cn
+site_description: 对象映射, 以及更多, 基于 Redis 和 Python
+repo_url: https://github.com/hellowac/redis-om-python-zh-cn
+
+theme:
+  name: "material"
+  palette:
+    - scheme: default
+      primary: "blue"
+      accent: "red"
+      toggle:
+        icon: material/lightbulb-outline
+        name: 切换到夜间模式
+    - scheme: slate
+      primary: "black"
+      accent: "black"
+      toggle:
+        icon: material/lightbulb
+        name: 切换到白天模式
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.sections
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+
+nav:
+  - 概览: index.md
+  - getting_started.md
+  - connections.md
+  - models.md
+  - validation.md
+  - redis_modules.md
+  - fastapi_integration.md
+  - errors.md
+
+markdown_extensions:
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - mkdocstrings:
+      default_handler: python

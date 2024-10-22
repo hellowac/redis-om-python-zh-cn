@@ -1,10 +1,10 @@
-# Validation
+# 验证
 
-Redis OM uses [Pydantic][pydantic-url] behind the scenes to validate data at runtime, based on the model's type annotations.
+Redis OM 在后台使用 [Pydantic][pydantic-url] 来根据模型的类型注释在运行时验证数据。
 
-## Basic Type Validation
+## 基本类型验证
 
-Validation works for basic type annotations like `str`. Thus, given the following model:
+基本类型注释（如 `str`）的验证是有效的。因此，给定以下模型：
 
 ```python
 import datetime
@@ -24,13 +24,13 @@ class Customer(HashModel):
     bio: Optional[str]
 ```
 
-... Redis OM will ensure that `first_name` is always a string.
+... Redis OM 将确保 `first_name` 始终是一个字符串。
 
-But every Redis OM model is also a Pydantic model, so you can use existing Pydantic validators like `EmailStr`, `Pattern`, and many more for complex validation!
+但每个 Redis OM 模型也是一个 Pydantic 模型，因此您可以使用现有的 Pydantic 验证器，如 `EmailStr`、`Pattern` 和更多其他复杂验证！
 
-## Complex Validation
+## 复杂验证
 
-Let's see what happens if we try to create a `Customer` object with an invalid email address.
+让我们看看如果尝试使用无效的电子邮件地址创建 `Customer` 对象会发生什么。
 
 ```python
 import datetime
@@ -50,7 +50,7 @@ class Customer(HashModel):
     bio: Optional[str]
 
 
-# We'll get a validation error if we try to use an invalid email address!
+# 如果尝试使用无效的电子邮件地址，我们将收到验证错误！
 try:
     Customer(
         first_name="Andrew",
@@ -69,7 +69,7 @@ except ValidationError as e:
     """
 ```
 
-As you can see, creating the `Customer` object generated the following error:
+如您所见，创建 `Customer` 对象生成了以下错误：
 
 ```
  Traceback:
@@ -78,7 +78,7 @@ As you can see, creating the `Customer` object generated the following error:
    value is not a valid email address (type=value_error.email)
 ```
 
-We'll also get a validation error if we change a field on a model instance to an invalid value and then try to save the model:
+如果我们将模型实例的字段更改为无效值，然后尝试保存模型，我们也会收到验证错误：
 
 ```python
 import datetime
@@ -120,7 +120,7 @@ except ValidationError as e:
     """
 ```
 
-Once again, we get the validation error:
+再次，我们收到验证错误：
 
 ```
  Traceback:
@@ -129,21 +129,18 @@ Once again, we get the validation error:
    value is not a valid email address (type=value_error.email)
 ```
 
-## Constrained Values
+## 约束值
 
-If you want to use any of the constraints.
+如果您想使用任何约束，Pydantic 包含许多类型注释来为模型字段值引入约束。
 
-Pydantic includes many type annotations to introduce constraints to your model field values.
+“约束”的概念包括许多可能性：
 
-The concept of "constraints" includes quite a few possibilities:
+* 始终小写的字符串
+* 必须匹配正则表达式的字符串
+* 在范围内的整数
+* 特定倍数的整数
+* 还有更多...
 
-* Strings that are always lowercase
-* Strings that must match a regular expression
-* Integers within a range
-* Integers that are a specific multiple
-* And many more...
-
-All of these constraint types work with Redis OM models. Read the [Pydantic documentation on constrained types](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types) to learn more.
-
+所有这些约束类型都可以与 Redis OM 模型一起使用。阅读 [Pydantic 文档中的约束类型](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types) 以了解更多信息。
 
 [pydantic-url]: https://github.com/samuelcolvin/pydantic

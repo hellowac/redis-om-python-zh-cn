@@ -1,14 +1,14 @@
-# Errors
+# 错误
 
-This page lists errors that Redis OM might generate while you're using it, with more context about the error.
+本页列出了 Redis OM 在使用过程中可能产生的错误，并提供了更多的错误上下文信息。
 
 ## E1
 
-> In order to query on a list field, you must define the contents of the list with a type annotation, like: orders: List[Order].
+> 为了对列表字段进行查询，您必须使用类型注解定义列表的内容，例如：orders: List[Order]。
 
-You will see this error if you try to use an "IN" query, e.g., `await TarotWitch.find(TarotWitch.tarot_cards << "death").all()`, on a field that is not a list.
+如果您尝试在不是列表的字段上使用 "IN" 查询，例如 `await TarotWitch.find(TarotWitch.tarot_cards << "death").all()`，您将看到此错误。
 
-In this example, `TarotWitch.tarot_cards` is a list, so the query works:
+在这个例子中，`TarotWitch.tarot_cards` 是一个列表，因此查询有效：
 
 ```python
 from typing import List
@@ -19,13 +19,13 @@ class TarotWitch(JsonModel):
     tarot_cards: List[str] = Field(index=True)
 ```
 
-But if `tarot_cards` was _not_ a list, trying to query with `<<` would have resulted in this error.
+但如果 `tarot_cards` 不是列表，尝试使用 `<<` 查询将导致此错误。
 
 ## E2
 
-> You tried sort by {field_name}, but {self.model} does not define that field as sortable.
+> 您尝试按 {field_name} 排序，但 {self.model} 并未将该字段定义为可排序。
 
-You tried to sort query results by a field that is not sortable. Here is how you mark a field as sortable:
+您尝试按一个不可排序的字段对查询结果进行排序。以下是如何将字段标记为可排序：
 
 ```python
 from typing import List
@@ -36,13 +36,13 @@ class Member(JsonModel):
     age: int = Field(index=True, sortable=True)
 ```
 
-**NOTE:** Only an indexed field can be sortable.
+**注意：** 只有已索引字段才能是可排序的。
 
 ## E3
 
->You tried to do a full-text search on the field '{field.name}', but the field is not indexed for full-text search. Use the full_text_search=True option.
+> 您尝试在字段 '{field.name}' 上进行全文搜索，但该字段未被索引以进行全文搜索。请使用 full_text_search=True 选项。
 
-You can make a full-text search with the module (`%`) operator. Such a query looks like this:
+您可以使用模块 (`%`) 运算符进行全文搜索。这样的查询看起来像这样：
 
 ```python
 from redis_om import JsonModel, Field
@@ -53,21 +53,21 @@ class Member(JsonModel):
 Member.find(Member.bio % "beaches").all()
 ```
 
-If you see this error, it means that the field you are querying (`bio` in the example) is not indexed for full-text search. Make sure you're marking the field both `index=True` and `full_text_search=True`, as in the example.
+如果您看到此错误，意味着您查询的字段（示例中的 `bio`）未被索引以进行全文搜索。确保同时将字段标记为 `index=True` 和 `full_text_search=True`，如示例所示。
 
 ## E4
 
-> Only lists and tuples are supported for multi-value fields.
+> 仅支持列表和元组作为多值字段。
 
-This means that you marked a field as `index=True`, but the field is not a type that Redis OM can actually index.
+这意味着您将一个字段标记为 `index=True`，但该字段不是 Redis OM 实际可以索引的类型。
 
-Specifically, you probably used a _subscripted_ annotation, like `Dict[str, str]`. The only subscripted types that OM can index are `List` and `Tuple`.
+具体而言，您可能使用了下标注释，例如 `Dict[str, str]`。Redis OM 只能索引的下标类型是 `List` 和 `Tuple`。
 
 ## E5
 
-> Only equals (=), not-equals (!=), and like() comparisons are supported for TEXT fields.
+> 仅支持等于 (=)、不等于 (!=) 和 like() 比较用于 TEXT 字段。
 
-You are querying a field you marked as indexed for full-text search. You can only query such fields with the operators for equality (==), non-equality (!=), and like `(%)`.
+您正在查询一个您标记为全文搜索的已索引字段。您只能使用相等（==）、不相等（!=）和 like `(%)` 运算符查询这些字段。
 
 ```python
 from redis_om import JsonModel, Field
@@ -75,23 +75,23 @@ from redis_om import JsonModel, Field
 class Member(JsonModel):
     bio: str = Field(index=True, full_text_search=True, default="")
 
-# Equality
+# 等于
 Member.find(Member.bio == "Programmer").all()
 
-# Non-equality
+# 不等于
 Member.find(Member.bio != "Programmer").all()
 
-# Like (full-text search). This stems "programming"
-# to find any matching terms with the same stem,
-# "program".
+# Like（全文搜索）。这将 "programming"
+# 词干提取，以找到任何匹配的相同词干的术语，
+# "program"。
 Member.find(Member.bio % "programming").all()
 ```
 
 ## E6
 
-> You tried to query by a field ({field_name}) that isn't indexed.
+> 您尝试查询一个未被索引的字段 ({field_name})。
 
-You wrote a query using a model field that you did not make indexed. You can only query indexed fields. Here is example code that would generate this error:
+您编写了一个查询，使用了一个未被标记为索引的模型字段。您只能查询已索引的字段。以下示例代码将生成此错误：
 
 ```python
 from redis_om import JsonModel, Field
@@ -100,12 +100,12 @@ class Member(JsonModel):
     first_name: str 
     bio: str = Field(index=True, full_text_search=True, default="")
 
-# Raises a QueryNotSupportedError because we did not make
-# `first_name` indexed!
+# 因为我们没有将 `first_name` 标记为索引，
+# 所以引发了 QueryNotSupportedError！
 Member.find(Member.first_name == "Andrew").all()
 ```
 
-Fix this by making the field indexed:
+通过将字段标记为索引来修复此问题：
 
 ```python
 from redis_om import JsonModel, Field
@@ -114,16 +114,16 @@ class Member(JsonModel):
     first_name: str = Field(index=True)
     bio: str = Field(index=True, full_text_search=True, default="")
 
-# Raises a QueryNotSupportedError because we did not make
-# `first_name` indexed!
+# 因为我们没有将 `first_name` 标记为索引，
+# 所以引发了 QueryNotSupportedError！
 Member.find(Member.first_name == "Andrew").all()
 ```
 
 ## E7
 
-> A query expression should start with either a field or an expression enclosed in parentheses.
+> 查询表达式应以字段或括号内的表达式开头。
 
-We got confused trying to parse your query expression. It's not you, it's us! Some code examples might help...
+我们在尝试解析您的查询表达式时感到困惑。这不是您的问题，是我们的！一些代码示例可能会有所帮助……
 
 ```python
 from redis_om import JsonModel, Field
@@ -132,38 +132,34 @@ class Member(JsonModel):
     first_name: str = Field(index=True)
     last_name: str = Field(index=True)
 
-    
-# Queries with a single operator are usually simple:
+# 只有一个运算符的查询通常很简单：
 Member.find(Member.first_name == "Andrew").all()
 
-# If you want to add multiple conditions, you can AND
-# them together by including the conditions one after
-# another as arguments.
+# 如果您想添加多个条件，可以将它们用 AND 结合在一起，
+# 通过将条件一个接一个地作为参数包含。
 Member.find(Member.first_name=="Andrew",
             Member.last_name=="Brookins").all()
 
-# Alternatively, you can separate the conditions with
-# parenthesis and use an explicit AND.
+# 或者，您可以用括号分隔条件，并使用显式的 AND。
 Member.find(
     (Member.first_name == "Andrew") & ~(Member.last_name == "Brookins")
 ).all()
 
-# You can't use `!` to say NOT. Instead, use `~`.
+# 您不能使用 `!` 表示 NOT。相反，请使用 `~`。
 Member.find(
     (Member.first_name == "Andrew") & 
-    ~(Member.last_name == "Brookins")  # <- Notice, this one is NOT now!
+    ~(Member.last_name == "Brookins")  # <- 请注意，这个现在是 NOT！
 ).all()
 
-# Parenthesis are key to building more complex queries,
-# like this one.
+# 括号是构建更复杂查询的关键，
+# 像这样。
 Member.find(
     ~(Member.first_name == "Andrew")
     & ((Member.last_name == "Brookins") | (Member.last_name == "Smith"))
 ).all()
 
-# If you're confused about how Redis OM interprets a query,
-# use the `tree()` method to visualize the expression tree
-# for a `FindQuery`.
+# 如果您对 Redis OM 如何解释查询感到困惑，
+# 可以使用 `tree()` 方法可视化 `FindQuery` 的表达式树。
 query = Member.find(
     ~(Member.first_name == "Andrew")
     & ((Member.last_name == "Brookins") | (Member.last_name == "Smith"))
@@ -186,15 +182,11 @@ print(query.expression.tree)
 
 ## E8
 
-> You can only combine two query expressions with AND (&) or OR (|).
+> 您只能用 AND (&) 或 OR (|) 组合两个查询表达式。
 
-The only two operators you can use to combine expressions in a query
-are `&` and `|`. You may have accidentally used another operator,
-or Redis OM might be confused. Make sure you are using parentheses
-to organize your query expressions.
+您可以在查询中组合表达式的唯一两个运算符是 `&` 和 `|`。您可能意外使用了其他运算符，或者 Redis OM 可能感到困惑。确保您使用括号来组织查询表达式。
 
-If you are trying to use "NOT," you can do that by prefixing a query
-with the `~` operator, like this:
+如果您试图使用 "NOT"，可以通过在查询前加上 `~` 运算符来实现，例如：
 
 ```python
 from redis_om import JsonModel, Field
@@ -203,14 +195,11 @@ class Member(JsonModel):
     first_name: str = Field(index=True)
     last_name: str = Field(index=True)
 
-    
-# Find people who are not named Andrew.
+# 查找不叫 Andrew 的人。
 Member.find(~(Member.first_name == "Andrew")).all()
 ```
 
-Note that this form requires parenthesis around the expression
-that you are "negating." Of course, this example makes more sense
-with `!=`:
+请注意，这种形式要求在您要 "否定" 的表达式周围加上括号。当然，这个例子用 `!=` 也更合适：
 
 ```python
 from redis_om import JsonModel, Field
@@ -219,10 +208,8 @@ class Member(JsonModel):
     first_name: str = Field(index=True)
     last_name: str = Field(index=True)
 
-    
-# Find people who are not named Andrew.
+# 查找不叫 Andrew 的人。
 Member.find(Member.first_name != "Andrew").all()
 ```
 
-Still, `~` is useful to negate groups of expressions
-surrounded by parentheses.
+不过，`~` 在否定括号包围的表达式组时非常有用。

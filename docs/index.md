@@ -1,33 +1,33 @@
-# Redis OM for Python
+# Python 版 Redis OM
 
-Welcome! This is the documentation for redis-om-python.
+欢迎！这是 redis-om-python 的文档。
 
-**NOTE**: The documentation is a bit sparse at the moment but will continue to grow!
+**注意**：文档目前有点稀疏，但会继续增加！
 
-## Getting Started
+## 入门
 
-Read the Getting Started tutorial at [getting_started.md](getting_started.md).
+阅读 [getting_started.md](getting_started.md) 上的入门教程。
 
-## Connecting to Redis
+## 连接到 Redis
 
-Read about connecting to Redis at [connections.md](connections.md).
+阅读 [connections.md](connections.md) 上有关连接到 Redis 的信息。
 
-## Models and Fields
+## 模型和字段
 
-Learn all about how to create model instances and define fields in [models.md](models.md).
+了解有关如何在 [models.md](models.md) 中创建模型实例和定义字段的所有信息。
 
-## Validating Data
+## 验证数据
 
-Read about how to use Redis OM models to validate data at [validation.md](validation.md)
+阅读 [validation.md](validation.md) 上有关如何使用 Redis OM 模型验证数据的信息
 
-## Redis Modules
+## Redis 模块
 
-Read how to get the RediSearch and RedisJSON modules at [redis_modules.md](redis_modules.md).
+阅读 [redis_modules.md](redis_modules.md) 上有关如何获取 RediSearch 和 RedisJSON 模块的信息。
 
-## FastAPI Integration
+## FastAPI 集成
 
-Redis OM is designed to integrate with the FastAPI web framework. See how this works at [fastapi_integration.md](fastapi_integration.md).
+Redis OM 旨在与 FastAPI Web 框架集成。请参阅 [fastapi_integration.md](fastapi_integration.md) 了解其工作原理。
 
-## Error Messages
+## 错误消息
 
-Get help with (some of) the error messages you might see from Redis OM: [errors.md](errors.md)
+获取有关您可能从 Redis OM 看到的（部分）错误消息的帮助：[errors.md](errors.md)

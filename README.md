@@ -8,7 +8,7 @@
 
 <p align="center">
     <p align="center">
-        Object mapping, and more, for Redis and Python
+        对象映射, 以及更多, 基于 Redis 和 Python
     </p>
 </p>
 
@@ -18,76 +18,76 @@
 [![License][license-image]][license-url]
 [![Build Status][ci-svg]][ci-url]
 
-**Redis OM Python** makes it easy to model Redis data in your Python applications.
+**Redis OM Python** 使在 Python 应用程序中建模 Redis 数据变得简单。
 
 [Redis OM .NET](https://github.com/redis/redis-om-dotnet) | [Redis OM Node.js](https://github.com/redis/redis-om-node) | [Redis OM Spring](https://github.com/redis/redis-om-spring) | **Redis OM Python**
 
 <details>
-  <summary><strong>Table of contents</strong></summary>
+  <summary><strong>目录</strong></summary>
 
 span
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [💡 Why Redis OM?](#-why-redis-om)
-- [💻 Installation](#-installation)
-- [🏁 Getting started](#-getting-started)
-- [📇 Modeling Your Data](#-modeling-your-data)
-- [✓ Validating Data With Your Model](#-validating-data-with-your-model)
-- [🔎 Rich Queries and Embedded Models](#-rich-queries-and-embedded-models)
-  - [Querying](#querying)
-  - [Embedded Models](#embedded-models)
-- [Calling Other Redis Commands](#calling-other-redis-commands)
-- [📚 Documentation](#-documentation)
-- [⛏️ Troubleshooting](#️-troubleshooting)
-- [✨ So How Do You Get RediSearch and RedisJSON?](#-so-how-do-you-get-redisearch-and-redisjson)
-- [❤️ Contributing](#️-contributing)
-- [📝 License](#-license)
+- [💡 为什么选择 Redis OM？](#-为什么选择-redis-om)
+- [💻 安装](#-安装)
+- [🏁 快速开始](#-快速开始)
+    - [启动 Redis](#启动-redis)
+- [📇 数据建模](#-数据建模)
+- [✓ 使用模型验证数据](#-使用模型验证数据)
+- [🔎 丰富的查询和嵌入式模型](#-丰富的查询和嵌入式模型)
+    - [查询](#查询)
+    - [嵌入式模型](#嵌入式模型)
+- [调用其他 Redis 命令](#调用其他-redis-命令)
+- [📚 文档](#-文档)
+- [⛏️ 故障排除](#️-故障排除)
+- [✨ 如何获取 RediSearch 和 RedisJSON？](#-如何获取-redisearch-和-redisjson)
+- [❤️ 贡献](#️-贡献)
+- [📝 许可证](#-许可证)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 </details>
 
-## 💡 Why Redis OM?
+## 💡 为什么选择 Redis OM？
 
-Redis OM provides high-level abstractions that make it easy to model and query data in Redis with modern Python applications.
+Redis OM 提供了高级抽象，使得在现代 Python 应用程序中建模和查询 Redis 数据变得简单。
 
-This **preview** release contains the following features:
+此 **预览** 版本包含以下功能：
 
-* Declarative object mapping for Redis objects
-* Declarative secondary-index generation
-* Fluent APIs for querying Redis
+* 对 Redis 对象的声明式对象映射
+* 声明式二级索引生成
+* 用于查询 Redis 的流畅 API
 
-## 💻 Installation
+## 💻 安装
 
-Installation is simple with `pip`, Poetry, or Pipenv.
+使用 `pip`、Poetry 或 Pipenv 安装非常简单。
 
 ```sh
-# With pip
+# 使用 pip
 $ pip install redis-om
 
-# Or, using Poetry
+# 或使用 Poetry
 $ poetry add redis-om
 ```
 
-## 🏁 Getting started
+## 🏁 快速开始
 
-### Starting Redis
+### 启动 Redis
 
-Before writing any code you'll need a Redis instance with the appropriate Redis modules! The quickest way to get this is with Docker:
+在编写任何代码之前，您需要一个带有适当 Redis 模块的 Redis 实例！最快的方法是使用 Docker：
 
 ```sh
 docker run -p 6379:6379 -p 8001:8001 redis/redis-stack
 ```
 
-This launches the [redis-stack](https://redis.io/docs/stack/) an extension of Redis that adds all manner of modern data structures to Redis. You'll also notice that if you open up http://localhost:8001 you'll have access to the redis-insight GUI, a GUI you can use to visualize and work with your data in Redis.
+这将启动 [redis-stack](https://redis.io/docs/stack/)，它是 Redis 的扩展，为 Redis 添加了各种现代数据结构。您还会注意到，如果打开 http://localhost:8001，您将可以访问 redis-insight GUI，这是一个可视化和操作 Redis 中数据的图形界面。
 
+## 📇 数据建模
 
-## 📇 Modeling Your Data
+Redis OM 包含强大的声明式模型，提供数据验证、序列化和持久化到 Redis。
 
-Redis OM contains powerful declarative models that give you data validation, serialization, and persistence to Redis.
-
-Check out this example of modeling customer data with Redis OM. First, we create a `Customer` model:
+查看这个使用 Redis OM 建模客户数据的示例。首先，我们创建一个 `Customer` 模型：
 
 ```python
 import datetime
@@ -107,7 +107,7 @@ class Customer(HashModel):
     bio: Optional[str] = None
 ```
 
-Now that we have a `Customer` model, let's use it to save customer data to Redis.
+现在我们有了 `Customer` 模型，接下来用它将客户数据保存到 Redis。
 
 ```python
 import datetime
@@ -127,7 +127,7 @@ class Customer(HashModel):
     bio: Optional[str] = None
 
 
-# First, we create a new `Customer` object:
+# 首先，我们创建一个新的 `Customer` 对象：
 andrew = Customer(
     first_name="Andrew",
     last_name="Brookins",
@@ -137,32 +137,32 @@ andrew = Customer(
     bio="Python developer, works at Redis, Inc."
 )
 
-# The model generates a globally unique primary key automatically
-# without needing to talk to Redis.
+# 该模型会自动生成一个全球唯一的主键
+# 无需与 Redis 通信。
 print(andrew.pk)
 # > "01FJM6PH661HCNNRC884H6K30C"
 
-# We can save the model to Redis by calling `save()`:
+# 我们可以通过调用 `save()` 将模型保存到 Redis：
 andrew.save()
 
-# Expire the model after 2 mins (120 seconds)
+# 设置模型在 2 分钟（120 秒）后过期
 andrew.expire(120)
 
-# To retrieve this customer with its primary key, we use `Customer.get()`:
+# 要使用主键检索此客户，我们使用 `Customer.get()`：
 assert Customer.get(andrew.pk) == andrew
 ```
 
-**Ready to learn more?** Check out the [getting started](docs/getting_started.md) guide.
+**准备好了解更多？** 请查看 [快速入门](docs/getting_started.md) 指南。
 
-Or, continue reading to see how Redis OM makes data validation a snap.
+或者，继续阅读以了解 Redis OM 如何简化数据验证。
 
-## ✓ Validating Data With Your Model
+## ✓ 使用模型验证数据
 
-Redis OM uses [Pydantic][pydantic-url] to validate data based on the type annotations you assign to fields in a model class.
+Redis OM 使用 [Pydantic][pydantic-url] 根据您在模型类中分配给字段的类型注释来验证数据。
 
-This validation ensures that fields like `first_name`, which the `Customer` model marked as a `str`, are always strings. **But every Redis OM model is also a Pydantic model**, so you can use Pydantic validators like `EmailStr`, `Pattern`, and many more for complex validations!
+此验证确保像 `first_name` 这样的字段（在 `Customer` 模型中标记为 `str`）始终是字符串。**但是每个 Redis OM 模型也是一个 Pydantic 模型**，因此您可以使用 Pydantic 验证器，如 `EmailStr`、`Pattern` 等，进行复杂的验证！
 
-For example, because we used the `EmailStr` type for the `email` field, we'll get a validation error if we try to create a `Customer` with an invalid email address:
+例如，由于我们对 `email` 字段使用了 `EmailStr` 类型，如果我们尝试创建一个无效电子邮件地址的 `Customer`，将会得到验证错误：
 
 ```python
 import datetime
@@ -200,23 +200,23 @@ except ValidationError as e:
     """
 ```
 
-**Any existing Pydantic validator should work** as a drop-in type annotation with a Redis OM model. You can also write arbitrarily complex custom validations!
+**任何现有的 Pydantic 验证器都应该可以**作为 Redis OM 模型的即插即用类型注释。您也可以编写任意复杂的自定义验证！
 
-To learn more, see the [documentation on data validation](docs/validation.md).
+要了解更多信息，请查看 [数据验证文档](docs/validation.md)。
 
-## 🔎 Rich Queries and Embedded Models
+## 🔎 丰富的查询和嵌入式模型
 
-Data modeling, validation, and saving models to Redis all work regardless of how you run Redis.
+数据建模、验证和将模型保存到 Redis 的所有功能都可以在任何 Redis 运行方式下使用。
 
-Next, we'll show you the **rich query expressions** and **embedded models** Redis OM provides when the [RediSearch][redisearch-url] and [RedisJSON][redis-json-url] modules are installed in your Redis deployment, or you're using [Redis Enterprise][redis-enterprise-url].
+接下来，我们将展示当您的 Redis 部署安装了 [RediSearch][redisearch-url] 和 [RedisJSON][redis-json-url] 模块时，Redis OM 提供的 **丰富查询表达式** 和 **嵌入式模型**。
 
-**TIP**: *Wait, what's a Redis module?* If you aren't familiar with Redis modules, review the [So, How Do You Get RediSearch and RedisJSON?](#-so-how-do-you-get-redisearch-and-redisjson) section of this README.
+**提示**：*等一下，Redis 模块是什么？* 如果您不熟悉 Redis 模块，请查看本 README 的 [那么，如何获取 RediSearch 和 RedisJSON？](#-so-how-do-you-get-redisearch-and-redisjson) 部分。
 
-### Querying
+### 查询
 
-Redis OM comes with a rich query language that allows you to query Redis with Python expressions.
+Redis OM 提供了丰富的查询语言，允许您使用 Python 表达式查询 Redis。
 
-To show how this works, we'll make a small change to the `Customer` model we defined earlier. We'll add `Field(index=True)` to tell Redis OM that we want to index the `last_name` and `age` fields:
+为了展示其工作原理，我们将对之前定义的 `Customer` 模型进行小改动。我们将添加 `Field(index=True)`，以告知 Redis OM 我们希望为 `last_name` 和 `age` 字段建立索引：
 
 ```python
 import datetime
@@ -240,38 +240,36 @@ class Customer(HashModel):
     bio: Optional[str] = None
 
 
-# Now, if we use this model with a Redis deployment that has the
-# RediSearch module installed, we can run queries like the following.
+# 现在，如果我们在安装了 RediSearch 模块的 Redis 部署中使用这个模型，
+# 我们可以运行如下查询。
 
-# Before running queries, we need to run migrations to set up the
-# indexes that Redis OM will use. You can also use the `migrate`
-# CLI tool for this!
+# 在运行查询之前，我们需要运行迁移以设置 Redis OM 将使用的索引。
+# 您也可以使用 `migrate` CLI 工具来完成此操作！
 Migrator().run()
 
-# Find all customers with the last name "Brookins"
+# 找到所有姓 "Brookins" 的客户
 Customer.find(Customer.last_name == "Brookins").all()
 
-# Find all customers that do NOT have the last name "Brookins"
+# 找到所有不姓 "Brookins" 的客户
 Customer.find(Customer.last_name != "Brookins").all()
 
-# Find all customers whose last name is "Brookins" OR whose age is
-# 100 AND whose last name is "Smith"
+# 找到所有姓 "Brookins" 的客户，或者年龄为 100 且姓 "Smith" 的客户
 Customer.find((Customer.last_name == "Brookins") | (
         Customer.age == 100
 ) & (Customer.last_name == "Smith")).all()
 ```
 
-These queries -- and more! -- are possible because **Redis OM manages indexes for you automatically**.
+这些查询——以及更多——之所以可能，是因为 **Redis OM 自动为您管理索引**。
 
-Querying with this index features a rich expression syntax inspired by the Django ORM, SQLAlchemy, and Peewee. We think you'll enjoy it!
+使用此索引进行查询具有丰富的表达语法，灵感来自 Django ORM、SQLAlchemy 和 Peewee。我们认为您会喜欢它！
 
-**Note:** Indexing only works for data stored in Redis logical database 0.  If you are using a different database number when connecting to Redis, you can expect the code to raise a `MigrationError` when you run the migrator.
+**注意：** 索引仅适用于存储在 Redis 逻辑数据库 0 中的数据。如果在连接到 Redis 时使用了不同的数据库编号，您可以预期在运行迁移器时代码会引发 `MigrationError`。
 
-### Embedded Models
+### 嵌入式模型
 
-Redis OM can store and query **nested models** like any document database, with the speed and power you get from Redis. Let's see how this works.
+Redis OM 可以像任何文档数据库一样存储和查询 **嵌套模型**，同时享受 Redis 带来的速度和强大功能。让我们看看这如何实现。
 
-In the next example, we'll define a new `Address` model and embed it within the `Customer` model.
+在下一个示例中，我们将定义一个新的 `Address` 模型，并将其嵌入到 `Customer` 模型中。
 
 ```python
 import datetime
@@ -303,26 +301,24 @@ class Customer(JsonModel):
     bio: Optional[str] = Field(index=True, full_text_search=True,
                                default="")
 
-    # Creates an embedded model.
+    # 创建嵌入式模型。
     address: Address
 
 
-# With these two models and a Redis deployment with the RedisJSON
-# module installed, we can run queries like the following.
+# 有了这两个模型以及安装了 RedisJSON 模块的 Redis 部署，我们可以运行如下查询。
 
-# Before running queries, we need to run migrations to set up the
-# indexes that Redis OM will use. You can also use the `migrate`
-# CLI tool for this!
+# 在运行查询之前，我们需要运行迁移以设置 Redis OM 将使用的索引。
+# 您也可以使用 `migrate` CLI 工具来完成此操作！
 Migrator().run()
 
-# Find all customers who live in San Antonio, TX
+# 找到所有居住在圣安东尼奥，德克萨斯州的客户
 Customer.find(Customer.address.city == "San Antonio",
               Customer.address.state == "TX")
 ```
 
-## Calling Other Redis Commands
+## 调用其他 Redis 命令
 
-Sometimes you'll need to run a Redis command directly.  Redis OM supports this through the `db` method on your model's class.  This returns a connected Redis client instance which exposes a function named for each Redis command.  For example, let's perform some basic set operations:
+有时您需要直接运行 Redis 命令。Redis OM 通过模型类上的 `db` 方法支持这一点。它返回一个连接的 Redis 客户端实例，该实例公开了一个以每个 Redis 命令命名的函数。例如，我们来执行一些基本的集合操作：
 
 ```python
 from redis_om import HashModel
@@ -334,16 +330,16 @@ redis_conn = Demo.db()
 
 redis_conn.sadd("myset", "a", "b", "c", "d")
 
-# Prints False
+# 打印 False
 print(redis_conn.sismember("myset", "e"))
 
-# Prints True
+# 打印 True
 print(redis_conn.sismember("myset", "b"))
 ```
 
-The parameters expected by each command function are those documented on the command's page on [redis.io](https://redis.io/commands/).
+每个命令函数所期望的参数与 [redis.io](https://redis.io/commands/) 上命令页面的文档相同。
 
-If you don't want to get a Redis connection from a model class, you can also use `get_redis_connection`:
+如果您不想从模型类获取 Redis 连接，也可以使用 `get_redis_connection`：
 
 ```python
 from redis_om import get_redis_connection
@@ -352,35 +348,35 @@ redis_conn = get_redis_connection()
 redis_conn.set("hello", "world")
 ```
 
-## 📚 Documentation
+## 📚 文档
 
-The Redis OM documentation is available [here](docs/index.md).
+Redis OM 文档可以在 [此处](docs/index.md) 找到。
 
-## ⛏️ Troubleshooting
+## ⛏️ 故障排除
 
-If you run into trouble or have any questions, we're here to help!
+如果您遇到问题或有任何疑问，我们随时为您提供帮助！
 
-Hit us up on the [Redis Discord Server](http://discord.gg/redis) or [open an issue on GitHub](https://github.com/redis-developer/redis-om-python/issues/new).
+请在 [Redis Discord 服务器](http://discord.gg/redis) 上联系我们，或 [在 GitHub 上打开一个问题](https://github.com/redis-developer/redis-om-python/issues/new)。
 
-## ✨ So How Do You Get RediSearch and RedisJSON?
+## ✨ 如何获取 RediSearch 和 RedisJSON？
 
-Some advanced features of Redis OM rely on core features from two source available Redis modules: [RediSearch][redisearch-url] and [RedisJSON][redis-json-url].
+Redis OM 的一些高级功能依赖于两个开源 Redis 模块的核心功能：[RediSearch][redisearch-url] 和 [RedisJSON][redis-json-url]。
 
-You can run these modules in your self-hosted Redis deployment, or you can use [Redis Enterprise][redis-enterprise-url], which includes both modules.
+您可以在自托管的 Redis 部署中运行这些模块，或者使用 [Redis Enterprise][redis-enterprise-url]，该服务包含这两个模块。
 
-To learn more, read [our documentation](docs/redis_modules.md).
+要了解更多信息，请阅读 [我们的文档](docs/redis_modules.md)。
 
-## ❤️ Contributing
+## ❤️ 贡献
 
-We'd love your contributions!
+我们欢迎您的贡献！
 
-**Bug reports** are especially helpful at this stage of the project. [You can open a bug report on GitHub](https://github.com/redis/redis-om-python/issues/new).
+**错误报告** 在项目的这个阶段特别有帮助。 [您可以在 GitHub 上打开一个错误报告](https://github.com/redis/redis-om-python/issues/new)。
 
-You can also **contribute documentation** -- or just let us know if something needs more detail. [Open an issue on GitHub](https://github.com/redis/redis-om-python/issues/new) to get started.
+您也可以 **贡献文档**——或者告诉我们是否需要更详细的信息。 [在 GitHub 上打开一个问题](https://github.com/redis/redis-om-python/issues/new) 以开始。
 
-## 📝 License
+## 📝 许可证
 
-Redis OM uses the [MIT license][license-url].
+Redis OM 使用 [MIT 许可证][license-url]。
 
 <!-- Badges -->
 

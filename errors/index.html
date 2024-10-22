@@ -1,0 +1,790 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对象映射, 以及更多, 基于 Redis 和 Python">
+      
+      
+      
+      
+        <link rel="prev" href="../fastapi_integration/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.4">
+    
+    
+      
+        <title>错误 - redis-om-python-zh-cn</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bd3936ea.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="redis-om-python-zh-cn" class="md-header__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            redis-om-python-zh-cn
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              错误
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red"  aria-label="切换到夜间模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到夜间模式" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="切换到白天模式"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="切换到白天模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="redis-om-python-zh-cn" class="md-nav__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    redis-om-python-zh-cn
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概览
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    入门 Redis OM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    连接到 Redis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模型和字段
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis_modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis 模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fastapi_integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastAPI 集成
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    错误
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    错误
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#e1" class="md-nav__link">
+    E1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e2" class="md-nav__link">
+    E2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e3" class="md-nav__link">
+    E3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e4" class="md-nav__link">
+    E4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e5" class="md-nav__link">
+    E5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e6" class="md-nav__link">
+    E6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e7" class="md-nav__link">
+    E7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e8" class="md-nav__link">
+    E8
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#e1" class="md-nav__link">
+    E1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e2" class="md-nav__link">
+    E2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e3" class="md-nav__link">
+    E3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e4" class="md-nav__link">
+    E4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e5" class="md-nav__link">
+    E5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e6" class="md-nav__link">
+    E6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e7" class="md-nav__link">
+    E7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e8" class="md-nav__link">
+    E8
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">错误</h1>
+<p>本页列出了 Redis OM 在使用过程中可能产生的错误，并提供了更多的错误上下文信息。</p>
+<h2 id="e1">E1</h2>
+<blockquote>
+<p>为了对列表字段进行查询，您必须使用类型注解定义列表的内容，例如：orders: List[Order]。</p>
+</blockquote>
+<p>如果您尝试在不是列表的字段上使用 "IN" 查询，例如 <code>await TarotWitch.find(TarotWitch.tarot_cards &lt;&lt; "death").all()</code>，您将看到此错误。</p>
+<p>在这个例子中，<code>TarotWitch.tarot_cards</code> 是一个列表，因此查询有效：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">TarotWitch</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">tarot_cards</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>但如果 <code>tarot_cards</code> 不是列表，尝试使用 <code>&lt;&lt;</code> 查询将导致此错误。</p>
+<h2 id="e2">E2</h2>
+<blockquote>
+<p>您尝试按 {field_name} 排序，但 {self.model} 并未将该字段定义为可排序。</p>
+</blockquote>
+<p>您尝试按一个不可排序的字段对查询结果进行排序。以下是如何将字段标记为可排序：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>注意：</strong> 只有已索引字段才能是可排序的。</p>
+<h2 id="e3">E3</h2>
+<blockquote>
+<p>您尝试在字段 '{field.name}' 上进行全文搜索，但该字段未被索引以进行全文搜索。请使用 full_text_search=True 选项。</p>
+</blockquote>
+<p>您可以使用模块 (<code>%</code>) 运算符进行全文搜索。这样的查询看起来像这样：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_text_search</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">bio</span> <span class="o">%</span> <span class="s2">&quot;beaches&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<p>如果您看到此错误，意味着您查询的字段（示例中的 <code>bio</code>）未被索引以进行全文搜索。确保同时将字段标记为 <code>index=True</code> 和 <code>full_text_search=True</code>，如示例所示。</p>
+<h2 id="e4">E4</h2>
+<blockquote>
+<p>仅支持列表和元组作为多值字段。</p>
+</blockquote>
+<p>这意味着您将一个字段标记为 <code>index=True</code>，但该字段不是 Redis OM 实际可以索引的类型。</p>
+<p>具体而言，您可能使用了下标注释，例如 <code>Dict[str, str]</code>。Redis OM 只能索引的下标类型是 <code>List</code> 和 <code>Tuple</code>。</p>
+<h2 id="e5">E5</h2>
+<blockquote>
+<p>仅支持等于 (=)、不等于 (!=) 和 like() 比较用于 TEXT 字段。</p>
+</blockquote>
+<p>您正在查询一个您标记为全文搜索的已索引字段。您只能使用相等（==）、不相等（!=）和 like <code>(%)</code> 运算符查询这些字段。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_text_search</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># 等于</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">bio</span> <span class="o">==</span> <span class="s2">&quot;Programmer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 不等于</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">bio</span> <span class="o">!=</span> <span class="s2">&quot;Programmer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># Like（全文搜索）。这将 &quot;programming&quot;</span>
+<span class="c1"># 词干提取，以找到任何匹配的相同词干的术语，</span>
+<span class="c1"># &quot;program&quot;。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">bio</span> <span class="o">%</span> <span class="s2">&quot;programming&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="e6">E6</h2>
+<blockquote>
+<p>您尝试查询一个未被索引的字段 ({field_name})。</p>
+</blockquote>
+<p>您编写了一个查询，使用了一个未被标记为索引的模型字段。您只能查询已索引的字段。以下示例代码将生成此错误：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> 
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_text_search</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># 因为我们没有将 `first_name` 标记为索引，</span>
+<span class="c1"># 所以引发了 QueryNotSupportedError！</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<p>通过将字段标记为索引来修复此问题：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_text_search</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># 因为我们没有将 `first_name` 标记为索引，</span>
+<span class="c1"># 所以引发了 QueryNotSupportedError！</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="e7">E7</h2>
+<blockquote>
+<p>查询表达式应以字段或括号内的表达式开头。</p>
+</blockquote>
+<p>我们在尝试解析您的查询表达式时感到困惑。这不是您的问题，是我们的！一些代码示例可能会有所帮助……</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 只有一个运算符的查询通常很简单：</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 如果您想添加多个条件，可以将它们用 AND 结合在一起，</span>
+<span class="c1"># 通过将条件一个接一个地作为参数包含。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span><span class="o">==</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+            <span class="n">Member</span><span class="o">.</span><span class="n">last_name</span><span class="o">==</span><span class="s2">&quot;Brookins&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 或者，您可以用括号分隔条件，并使用显式的 AND。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 您不能使用 `!` 表示 NOT。相反，请使用 `~`。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span> <span class="o">&amp;</span> 
+    <span class="o">~</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span>  <span class="c1"># &lt;- 请注意，这个现在是 NOT！</span>
+<span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 括号是构建更复杂查询的关键，</span>
+<span class="c1"># 像这样。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+    <span class="o">~</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">((</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Smith&quot;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 如果您对 Redis OM 如何解释查询感到困惑，</span>
+<span class="c1"># 可以使用 `tree()` 方法可视化 `FindQuery` 的表达式树。</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+    <span class="o">~</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">((</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Smith&quot;</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">           ┌first_name</span>
+<span class="sd">    ┌NOT EQ┤</span>
+<span class="sd">    |      └Andrew</span>
+<span class="sd"> AND┤</span>
+<span class="sd">    |     ┌last_name</span>
+<span class="sd">    |  ┌EQ┤</span>
+<span class="sd">    |  |  └Brookins</span>
+<span class="sd">    └OR┤</span>
+<span class="sd">       |  ┌last_name</span>
+<span class="sd">       └EQ┤</span>
+<span class="sd">          └Smith</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<h2 id="e8">E8</h2>
+<blockquote>
+<p>您只能用 AND (&amp;) 或 OR (|) 组合两个查询表达式。</p>
+</blockquote>
+<p>您可以在查询中组合表达式的唯一两个运算符是 <code>&amp;</code> 和 <code>|</code>。您可能意外使用了其他运算符，或者 Redis OM 可能感到困惑。确保您使用括号来组织查询表达式。</p>
+<p>如果您试图使用 "NOT"，可以通过在查询前加上 <code>~</code> 运算符来实现，例如：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 查找不叫 Andrew 的人。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">==</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<p>请注意，这种形式要求在您要 "否定" 的表达式周围加上括号。当然，这个例子用 <code>!=</code> 也更合适：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">JsonModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 查找不叫 Andrew 的人。</span>
+<span class="n">Member</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">first_name</span> <span class="o">!=</span> <span class="s2">&quot;Andrew&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<p>不过，<code>~</code> 在否定括号包围的表达式组时非常有用。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.top", "navigation.sections", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.94c44541.min.js"></script>
+      
+    
+  </body>
+</html>

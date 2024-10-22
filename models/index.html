@@ -1,0 +1,930 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对象映射, 以及更多, 基于 Redis 和 Python">
+      
+      
+      
+      
+        <link rel="prev" href="../connections/">
+      
+      
+        <link rel="next" href="../validation/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.4">
+    
+    
+      
+        <title>模型和字段 - redis-om-python-zh-cn</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bd3936ea.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="redis-om-python-zh-cn" class="md-header__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            redis-om-python-zh-cn
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              模型和字段
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red"  aria-label="切换到夜间模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到夜间模式" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="切换到白天模式"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="切换到白天模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="redis-om-python-zh-cn" class="md-nav__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    redis-om-python-zh-cn
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概览
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    入门 Redis OM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    连接到 Redis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    模型和字段
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    模型和字段
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hashmodel-jsonmodel" class="md-nav__link">
+    HashModel 与 JsonModel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    创建您的模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    配置模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    抽象模型
+  </a>
+  
+    <nav class="md-nav" aria-label="抽象模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta" class="md-nav__link">
+    Meta 对象是“特殊的”
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta_1" class="md-nav__link">
+    Meta 对象支持的所有设置
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    配置 Pydantic
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    字段
+  </a>
+  
+    <nav class="md-nav" aria-label="字段">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hashmodel" class="md-nav__link">
+    使用 HashModel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonmodel" class="md-nav__link">
+    使用 JsonModel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    默认值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    标记字段为索引
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis_modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis 模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fastapi_integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastAPI 集成
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    错误
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hashmodel-jsonmodel" class="md-nav__link">
+    HashModel 与 JsonModel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    创建您的模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    配置模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    抽象模型
+  </a>
+  
+    <nav class="md-nav" aria-label="抽象模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta" class="md-nav__link">
+    Meta 对象是“特殊的”
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta_1" class="md-nav__link">
+    Meta 对象支持的所有设置
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    配置 Pydantic
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    字段
+  </a>
+  
+    <nav class="md-nav" aria-label="字段">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hashmodel" class="md-nav__link">
+    使用 HashModel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonmodel" class="md-nav__link">
+    使用 JsonModel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    默认值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    标记字段为索引
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">模型和字段</h1>
+<p>Redis OM 对象映射、验证和查询功能的核心是一对声明性模型：<code>HashModel</code> 和 <code>JsonModel</code>。这两个模型提供大致相同的 API，但它们在 Redis 中存储数据的方式不同。</p>
+<p>本页将解释如何通过子类化这些类之一来创建您的 Redis OM 模型。</p>
+<h2 id="hashmodel-jsonmodel">HashModel 与 JsonModel</h2>
+<p>首先，您应该使用哪个？</p>
+<p>选择相对简单。如果您想将一个模型嵌入到另一个模型中，比如将一个 <code>Customer</code> 模型与一个 <code>Order</code> 模型列表关联，那么您需要使用 <code>JsonModel</code>。只有 <code>JsonModel</code> 支持嵌入模型。</p>
+<p>否则，使用 <code>HashModel</code>。</p>
+<h2 id="_2">创建您的模型</h2>
+<p>您可以通过子类化 <code>HashModel</code> 或 <code>JsonModel</code> 来创建 Redis OM 模型。例如：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div>
+<h2 id="_3">配置模型</h2>
+<p>您可以在模型中配置多个特定于 Redis OM 的设置。您可以使用一个称为 <em>Meta 对象</em> 的特殊对象来配置这些设置。</p>
+<p>以下是使用 Meta 对象设置全局键前缀的示例：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">global_key_prefix</span> <span class="o">=</span> <span class="s2">&quot;customer-dashboard&quot;</span>
+</code></pre></div>
+<h2 id="_4">抽象模型</h2>
+<p>您可以通过在 <code>HashModel</code> 或 <code>JsonModel</code> 之上子类化 <code>ABC</code> 来创建抽象 Redis OM 模型。抽象模型仅存在于为子类收集共享配置的目的——您无法实例化它们。</p>
+<p>抽象模型的一个用途是配置应用程序中所有模型都将使用的 Redis 键前缀。这是与 Redis 的一个良好最佳实践。以下是使用抽象模型的方法：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">BaseModel</span><span class="p">(</span><span class="n">HashModel</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">global_key_prefix</span> <span class="o">=</span> <span class="s2">&quot;your-application&quot;</span>
+</code></pre></div>
+<h3 id="meta">Meta 对象是“特殊的”</h3>
+<p>Meta 对象有一个特殊的属性：如果您从具有 Meta 对象的基类创建模型子类，Redis OM 会将父类的字段复制到子类的 Meta 对象中。</p>
+<p>因此，子类可以在其父类的 Meta 类中重写单个字段，而无需重新定义所有字段。</p>
+<p>一个示例将使这一点更加清晰：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span><span class="p">,</span> <span class="n">get_redis_connection</span>
+
+
+<span class="n">redis</span> <span class="o">=</span> <span class="n">get_redis_connection</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">6380</span><span class="p">)</span>
+<span class="n">other_redis</span> <span class="o">=</span> <span class="n">get_redis_connection</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">6381</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BaseModel</span><span class="p">(</span><span class="n">HashModel</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">global_key_prefix</span> <span class="o">=</span> <span class="s2">&quot;customer-dashboard&quot;</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="n">redis</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="n">other_redis</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">global_key_prefix</span><span class="p">)</span>
+<span class="c1"># &gt; &quot;customer-dashboard&quot;</span>
+</code></pre></div>
+<p>在这个例子中，我们创建了一个名为 <code>BaseModel</code> 的抽象基模型，并为其提供了一个包含数据库连接和全局键前缀的 Meta 对象。</p>
+<p>然后我们创建了一个名为 <code>Customer</code> 的 <code>BaseModel</code> 子类，并为其提供了第二个 Meta 对象，但只定义了 <code>database</code>。<code>Customer</code> <em>也获得了 <code>BaseModel</code> 定义的全局键前缀</em>（"customer-dashboard"）。</p>
+<p>虽然这与 Python 中通常的对象继承方式不同，但我们认为这有助于使抽象模型更有用，尤其是作为分组共享模型设置的一种方式。</p>
+<h3 id="meta_1">Meta 对象支持的所有设置</h3>
+<p>以下是 Meta 对象中可用设置及其控制内容的表格。</p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>global_key_prefix</td>
+<td>应用于模型管理的每个 Redis 键的字符串前缀。这可以是您应用程序的名称。</td>
+<td>""</td>
+</tr>
+<tr>
+<td>model_key_prefix</td>
+<td>应用于表示每个模型的 Redis 键的字符串前缀。例如，HashModel 的 Redis Hash 键。此前缀也会添加到为每个具有索引字段的模型创建的 redisearch 索引中。</td>
+<td>f"{new_class.<strong>module</strong>}.{new_class.<strong>name</strong>}"</td>
+</tr>
+<tr>
+<td>primary_key_pattern</td>
+<td>生成表示此模型的 Redis 键的基础字符串的格式字符串。此字符串应接受一个 "pk" 格式参数。<strong>注意：</strong>这是一个“新风格”的格式字符串，将通过 <code>.format()</code> 调用。</td>
+<td>"{pk}"</td>
+</tr>
+<tr>
+<td>database</td>
+<td>模型将用于与 Redis 通信的 redis.asyncio.Redis 或 redis.Redis 客户端实例。</td>
+<td>使用 connections.get_redis_connection() 创建的新实例。</td>
+</tr>
+<tr>
+<td>primary_key_creator_cls</td>
+<td>遵循 PrimaryKeyCreator 协议的类，Redis OM 将使用该类为新的模型实例创建主键。</td>
+<td>UlidPrimaryKey</td>
+</tr>
+<tr>
+<td>index_name</td>
+<td>此模型使用的 RediSearch 索引名称。仅在至少一个模型的字段被标记为可索引（<code>index=True</code>）时使用。</td>
+<td>"{global_key_prefix}:{model_key_prefix}:index"</td>
+</tr>
+<tr>
+<td>embedded</td>
+<td>此模型是否为“嵌入式”。嵌入式模型不包括在创建和销毁索引的迁移中。相反，它们的索引字段包含在父模型的索引中。<strong>注意</strong>：只有 <code>JsonModel</code> 可以拥有嵌入式模型。</td>
+<td>False</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>用于字符串的默认编码。此编码在连接级别传递给 redis-py。在这两种情况下，Redis OM 将使用您选择的编码解码来自 Redis 的二进制字符串。</td>
+<td>"utf-8"</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pydantic">配置 Pydantic</h2>
+<p>每个 Redis OM 模型也是一个 Pydantic 模型，因此除了使用 Meta 对象配置 Redis OM 行为外，您还可以通过模型类中的 Config 对象控制 Pydantic 配置。</p>
+<p>有关此对象的工作方式和可用设置的详细信息，请参阅 <a href="https://pydantic-docs.helpmanual.io/usage/model_config/">Pydantic 文档</a>。</p>
+<p>Redis OM 为模型设置的默认 Pydantic 配置相当于以下内容（在实际模型上演示）：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="c1"># ... 字段 ...</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+        <span class="n">from_attributes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>如果您更改这些设置，某些功能可能无法正常工作。</p>
+<h2 id="_5">字段</h2>
+<p>您可以使用 Python <em>类型注解</em> 在 Redis OM 模型上定义字段。如果您对类型注解不熟悉，可以查看这个 <a href="https://towardsdatascience.com/type-annotations-in-python-d90990b172dc">教程</a>。</p>
+<p>这与 Pydantic 的工作方式完全相同。有关字段类型的指导，请查看 <a href="https://pydantic-docs.helpmanual.io/usage/types/">Pydantic 文档</a>。</p>
+<h3 id="hashmodel">使用 HashModel</h3>
+<p><code>HashModel</code> 将数据存储在 Redis Hash 中，结构是扁平的。这意味着 Redis Hash 不能包含 Redis Set、List 或 Hash。由于这个要求，<code>HashModel</code> 当前也不支持容器类型，例如：</p>
+<ul>
+<li>集合</li>
+<li>列表</li>
+<li>字典和其他“映射”类型</li>
+<li>其他 Redis OM 模型</li>
+<li>Pydantic 模型</li>
+</ul>
+<p><strong>注意</strong>：将来，我们可能会将这些值序列化为 JSON 字符串，就像我们对 <code>JsonModel</code> 所做的那样。不同之处在于，在 <code>HashModel</code> 的情况下，您将无法对这些字段进行索引，只能获取和保存它们。而在 <code>JsonModel</code> 中，您可以对列表字段和嵌入的 <code>JsonModel</code> 进行索引。</p>
+<p>因此，简而言之，如果您想使用容器类型，请使用 <code>JsonModel</code>。</p>
+<h3 id="jsonmodel">使用 JsonModel</h3>
+<p>好消息！<code>JsonModel</code> 支持容器类型。</p>
+<p>我们将使用 Pydantic 的 JSON 序列化和编码来序列化您的 <code>JsonModel</code> 并将其保存在 Redis 中。</p>
+<h3 id="_6">默认值</h3>
+<p>字段可以具有默认值。您通过为字段赋值来设置它们。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>  <span class="c1"># &lt;- 在这里添加了默认值</span>
+</code></pre></div>
+<p>现在，如果我们创建一个没有 <code>bio</code> 字段的 <code>Customer</code> 对象，它将使用默认值。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>  <span class="c1"># &lt;- 注意，我们没有提供 bio！</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">bio</span><span class="p">)</span>  <span class="c1"># &lt;- 所以我们得到了默认值。</span>
+<span class="c1"># &gt; &#39;Super Dope&#39;</span>
+</code></pre></div>
+<p>模型将在您下次调用 <code>save()</code> 时将此默认值保存到 Redis。</p>
+<h2 id="_7">标记字段为索引</h2>
+<p>如果您在 Redis 实例中使用 RediSearch 模块，可以将字段标记为“索引”。一旦您将模型中的任何字段标记为索引，Redis OM 会自动为该模型创建和管理一个二级索引，使您能够对任何索引字段进行查询。</p>
+<p>要将字段标记为索引，您需要使用 Redis OM 的 <code>Field()</code> 助手，如下所示：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">HashModel</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>在这个例子中，我们将 <code>Customer.last_name</code> 标记为索引。</p>
+<p>要为具有索引字段的任何模型创建索引，请使用 Redis OM 安装在您的 Python 环境中的 <code>migrate</code> CLI 命令。</p>
+<p>该命令会检测您项目中的任何 <code>JsonModel</code> 或 <code>HashModel</code> 实例，并对每个不是抽象或嵌入的模型执行以下操作：</p>
+<ul>
+<li>如果模型尚未存在索引：</li>
+<li>迁移工具创建一个索引</li>
+<li>迁移工具存储索引定义的哈希</li>
+<li>如果模型存在索引：</li>
+<li>迁移工具检查存储的索引哈希是否过时</li>
+<li>如果存储的哈希过时，迁移工具会删除索引（不会删除您的数据！）并使用新的索引定义重建它</li>
+</ul>
+<p>您也可以通过代码自行运行 <code>Migrator</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_redis_connection</span><span class="p">,</span>
+    <span class="n">Migrator</span>
+<span class="p">)</span>
+
+<span class="n">redis</span> <span class="o">=</span> <span class="n">get_redis_connection</span><span class="p">()</span>
+<span class="n">Migrator</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.top", "navigation.sections", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.94c44541.min.js"></script>
+      
+    
+  </body>
+</html>

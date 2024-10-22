@@ -1,0 +1,1651 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对象映射, 以及更多, 基于 Redis 和 Python">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../connections/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.4">
+    
+    
+      
+        <title>入门 Redis OM - redis-om-python-zh-cn</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bd3936ea.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redis-om" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="redis-om-python-zh-cn" class="md-header__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            redis-om-python-zh-cn
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              入门 Redis OM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="red"  aria-label="切换到夜间模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到夜间模式" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="black"  aria-label="切换到白天模式"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="切换到白天模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="redis-om-python-zh-cn" class="md-nav__button md-logo" aria-label="redis-om-python-zh-cn" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    redis-om-python-zh-cn
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hellowac/redis-om-python-zh-cn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概览
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    入门 Redis OM
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    入门 Redis OM
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    先决条件
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    Redis
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    下载 Redis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-redis" class="md-nav__link">
+    在 Windows 上安装 Redis
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redisearch-redisjson" class="md-nav__link">
+    推荐：RediSearch 和 RedisJSON
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_2" class="md-nav__link">
+    启动 Redis
+  </a>
+  
+    <nav class="md-nav" aria-label="启动 Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ubuntu-linux-wsl" class="md-nav__link">
+    Ubuntu Linux（包括 WSL）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#homebrew-macos" class="md-nav__link">
+    使用 Homebrew 的 MacOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redismod-docker" class="md-nav__link">
+    使用 redismod 镜像的 Docker（推荐）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-docker" class="md-nav__link">
+    使用 redis 镜像的 Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-om_1" class="md-nav__link">
+    安装 Redis OM
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-url" class="md-nav__link">
+    设置 Redis URL 环境变量
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    定义模型
+  </a>
+  
+    <nav class="md-nav" aria-label="定义模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hashmodel" class="md-nav__link">
+    HashModel 类
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    类型注解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    创建模型
+  </a>
+  
+    <nav class="md-nav" aria-label="创建模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    可选字段
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    默认值
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    自动主键
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    数据验证
+  </a>
+  
+    <nav class="md-nav" aria-label="数据验证">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    模型默认强制转换值
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    严格验证
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    保存模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    过期模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_3" class="md-nav__link">
+    在 Redis 中检查数据
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    获取模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    使用表达式查询模型
+  </a>
+  
+    <nav class="md-nav" aria-label="使用表达式查询模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    保存和查询布尔值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_4" class="md-nav__link">
+    调用其他 Redis 命令
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    下一步
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    连接到 Redis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模型和字段
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis_modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis 模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fastapi_integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastAPI 集成
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    错误
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    先决条件
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    Redis
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    下载 Redis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-redis" class="md-nav__link">
+    在 Windows 上安装 Redis
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redisearch-redisjson" class="md-nav__link">
+    推荐：RediSearch 和 RedisJSON
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_2" class="md-nav__link">
+    启动 Redis
+  </a>
+  
+    <nav class="md-nav" aria-label="启动 Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ubuntu-linux-wsl" class="md-nav__link">
+    Ubuntu Linux（包括 WSL）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#homebrew-macos" class="md-nav__link">
+    使用 Homebrew 的 MacOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redismod-docker" class="md-nav__link">
+    使用 redismod 镜像的 Docker（推荐）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-docker" class="md-nav__link">
+    使用 redis 镜像的 Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-om_1" class="md-nav__link">
+    安装 Redis OM
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-url" class="md-nav__link">
+    设置 Redis URL 环境变量
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    定义模型
+  </a>
+  
+    <nav class="md-nav" aria-label="定义模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hashmodel" class="md-nav__link">
+    HashModel 类
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    类型注解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    创建模型
+  </a>
+  
+    <nav class="md-nav" aria-label="创建模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    可选字段
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    默认值
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    自动主键
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    数据验证
+  </a>
+  
+    <nav class="md-nav" aria-label="数据验证">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    模型默认强制转换值
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    严格验证
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    保存模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    过期模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_3" class="md-nav__link">
+    在 Redis 中检查数据
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    获取模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    使用表达式查询模型
+  </a>
+  
+    <nav class="md-nav" aria-label="使用表达式查询模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    保存和查询布尔值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_4" class="md-nav__link">
+    调用其他 Redis 命令
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    下一步
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="redis-om">入门 Redis OM</h1>
+<h2 id="_1">简介</h2>
+<p>本教程将引导您安装 Redis OM，创建第一个模型，并使用它来保存和验证数据。</p>
+<h2 id="_2">先决条件</h2>
+<p>Redis OM 需要 Python 版本 3.8 或更高版本以及一个 Redis 实例进行连接。</p>
+<h2 id="python">Python</h2>
+<p>确保您正在运行 <strong>Python 版本 3.8 或更高版本</strong>：</p>
+<div class="highlight"><pre><span></span><code>python --version
+Python 3.8.0
+</code></pre></div>
+<p>如果您尚未安装 Python，可以从 <a href="https://www.python.org/downloads/">Python.org</a> 下载，使用 <a href="https://github.com/pyenv/pyenv">pyenv</a>，或通过操作系统的包管理器安装 Python。</p>
+<p>此库需要 <a href="https://pypi.org/project/redis">redis-py</a> 版本 4.2.0 或更高版本。</p>
+<h2 id="redis">Redis</h2>
+<p>Redis OM 将数据保存在 Redis 中，因此您需要安装并运行 Redis 以完成本教程。</p>
+<p>我们推荐使用 <a href="https://hub.docker.com/r/redis/redis-stack">redis-stack</a> 镜像，因为它包含此库用来提供额外功能的 Redis 功能。指南后面的部分将提供有关这些功能的更多细节。</p>
+<p>您也可以使用官方的 Redis Docker 镜像，该镜像托管在 <a href="https://hub.docker.com/_/redis">Docker Hub</a> 上。然而，这个镜像不包括存储 JSON 模型和使用 <code>find</code> 查询接口所需的搜索和 JSON 模块。</p>
+<p><strong>注意</strong>：当我们在本指南的后面讨论如何实际启动 Redis 时，将谈到使用 Docker 启动 Redis。</p>
+<h3 id="redis_1">下载 Redis</h3>
+<p>Redis 的最新版本可从 <a href="https://redis.io/">Redis.io</a> 获取。您也可以通过操作系统的包管理器安装 Redis。</p>
+<p><strong>注意</strong>：本教程将指导您如何在本地启动 Redis，但如果 Redis 在远程服务器上运行，这些说明也适用。</p>
+<h3 id="windows-redis">在 Windows 上安装 Redis</h3>
+<p>Redis 不能直接在 Windows 上运行，但您可以使用 Windows 子系统 Linux (WSL) 来运行 Redis。有关详细信息，请参阅 <a href="https://youtu.be/_nFwPTHOMIY">我们在 YouTube 上的视频</a>。</p>
+<p>Windows 用户还可以使用前面提到的 Docker 镜像。</p>
+<h2 id="redisearch-redisjson">推荐：RediSearch 和 RedisJSON</h2>
+<p>Redis OM 依赖 <a href="https://redis.io/docs/stack/search/">RediSearch</a> 和 <a href="https://redis.io/docs/stack/json/">RedisJSON</a> Redis 模块，以支持丰富的查询和嵌入模型。</p>
+<p>您不需要这些 Redis 模块来使用 Redis OM 的数据建模、验证和持久化功能，但我们推荐您使用它们以充分发挥 Redis OM 的优势。</p>
+<p>在本地开发期间运行这些 Redis 模块的最简单方法是使用 <a href="https://hub.docker.com/r/redis/redis-stack">redis-stack</a> Docker 镜像。</p>
+<p>有关其他安装方法，请遵循这两个模块主页上的“快速入门”指南。</p>
+<h2 id="redis_2">启动 Redis</h2>
+<p>在开始使用 Redis OM 之前，请确保启动 Redis。</p>
+<p>启动 Redis 的命令将取决于您如何安装它。</p>
+<h3 id="ubuntu-linux-wsl">Ubuntu Linux（包括 WSL）</h3>
+<p>如果您使用 <code>apt</code> 安装了 Redis，请使用 <code>systemctl</code> 命令启动它：</p>
+<pre><code>$ sudo systemctl restart redis.service
+</code></pre>
+<p>否则，您可以手动启动服务器：</p>
+<pre><code>$ redis-server start
+</code></pre>
+<h3 id="homebrew-macos">使用 Homebrew 的 MacOS</h3>
+<pre><code>$ brew services start redis
+</code></pre>
+<h3 id="docker">Docker</h3>
+<p>使用 Docker 启动 Redis 的命令取决于您选择使用的镜像。</p>
+<p><strong>提示：</strong> 这些示例中的 <code>-d</code> 选项使 Redis 在后台运行，而 <code>-p 6379:6379</code> 则使 Redis 可以通过本地主机的 6379 端口访问。</p>
+<h4 id="redismod-docker">使用 <code>redismod</code> 镜像的 Docker（推荐）</h4>
+<pre><code>$ docker run -d -p 6379:6379 redislabs/redismod
+</code></pre>
+<h3 id="redis-docker">使用 <code>redis</code> 镜像的 Docker</h3>
+<pre><code>$ docker run -d -p 6379:6379 redis
+</code></pre>
+<h2 id="redis-om_1">安装 Redis OM</h2>
+<p>安装 Redis OM 的推荐方法是使用 <a href="https://python-poetry.org/docs/">Poetry</a>。您可以使用以下命令通过 Poetry 安装 Redis OM：</p>
+<pre><code>$ poetry add redis-om
+</code></pre>
+<p>如果您使用 Pipenv，则命令为：</p>
+<pre><code>$ pipenv install redis-om
+</code></pre>
+<p>最后，您可以通过运行以下命令使用 <code>pip</code> 安装 Redis OM：</p>
+<pre><code>$ pip install redis-om
+</code></pre>
+<p><strong>提示：</strong> 如果您不使用 Poetry 或 Pipenv，而是直接使用 <code>pip</code> 安装，建议您在虚拟环境（即 virtualenv）中安装 Redis OM。如果您对这个概念不熟悉，请参阅 <a href="https://realpython.com/lessons/creating-virtual-environment/">Dan Bader 的视频和文字记录</a>。</p>
+<h2 id="redis-url">设置 Redis URL 环境变量</h2>
+<p>我们快要准备好创建 Redis OM 模型了！但首先，我们需要确保 Redis OM 知道如何连接到 Redis。</p>
+<p>默认情况下，Redis OM 尝试连接到您本地主机的 6379 端口。大多数本地安装方法会导致 Redis 运行在这个位置，在这种情况下您无需做任何特别的事情。</p>
+<p>然而，如果您将 Redis 配置为在不同的端口上运行，或者您正在使用远程 Redis 服务器，则需要设置 <code>REDIS_OM_URL</code> 环境变量。</p>
+<p><code>REDIS_OM_URL</code> 环境变量遵循 redis-py URL 格式：</p>
+<pre><code>redis://[[username]:[password]]@localhost:6379/[database number]
+</code></pre>
+<p>默认连接相当于以下 <code>REDIS_OM_URL</code> 环境变量：</p>
+<pre><code>redis://@localhost:6379
+</code></pre>
+<p><strong>提示：</strong> Redis 数据库是编号的，默认值为 0。您可以省略数据库编号以使用默认数据库。</p>
+<p><strong>注意：</strong> 索引仅适用于存储在 Redis 逻辑数据库 0 中的数据。如果在连接到 Redis 时使用不同的数据库编号，您可以预期代码在运行迁移器时会引发 <code>MigrationError</code>。</p>
+<p>其他支持的前缀包括 "rediss" 用于 SSL 连接和 "unix" 用于 Unix 域套接字：</p>
+<pre><code>rediss://[[username]:[password]]@localhost:6379/0
+unix://[[username]:[password]]@/path/to/socket.sock?db=0
+</code></pre>
+<h2 id="_3">定义模型</h2>
+<p>在本教程中，我们将创建一个 <code>Customer</code> 模型，用于验证和保存数据。让我们从模型的基本定义开始。我们将逐步添加功能。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div>
+<p>有几个细节需要注意：</p>
+<ol>
+<li>我们的 <code>Customer</code> 模型扩展了 <code>HashModel</code> 类。这意味着它将作为哈希保存到 Redis。Redis OM 提供的另一个模型类是 <code>JsonModel</code>，稍后我们会讨论。</li>
+<li>我们使用 Python 类型注解指定了模型的字段。</li>
+</ol>
+<p>让我们更深入地了解一下 <code>HashModel</code> 类和类型注解。</p>
+<h3 id="hashmodel">HashModel 类</h3>
+<p>当您对 <code>HashModel</code> 进行子类化时，您的子类既是 Redis OM 模型，具有将数据保存到 Redis 的方法，同时也是 Pydantic 模型。</p>
+<p>这意味着您可以在 Redis OM 模型中使用 Pydantic 字段验证，我们将在后面讨论验证时涵盖这一点。但这也意味着您可以在任何需要使用 Pydantic 模型的地方使用 Redis OM 模型，比如在您的 FastAPI 应用程序中。🤯</p>
+<h3 id="_4">类型注解</h3>
+<p>您添加到模型字段的类型注解用于几个目的：</p>
+<ul>
+<li>使用 Pydantic 验证器验证数据</li>
+<li>序列化数据到 Redis</li>
+<li>从 Redis 反序列化数据</li>
+</ul>
+<p>在本教程的过程中，我们将看到这些用途的示例。</p>
+<p>关于 <code>HashModel</code> 类的一个重要细节是，它不支持 <code>list</code>、<code>set</code> 或映射（如 <code>dict</code>）类型。这是因为 Redis 哈希不能包含列表、集合或其他哈希。</p>
+<p>如果您想建模带有列表、集合或映射类型的字段，或者其他模型，您需要使用 <code>JsonModel</code> 类，它可以支持这些类型以及嵌入模型。</p>
+<h2 id="_5">创建模型</h2>
+<p>让我们看看创建模型对象的样子：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span>
+    <span class="n">bio</span><span class="o">=</span><span class="s2">&quot;Python developer, works at Redis, Inc.&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="_6">可选字段</h3>
+<p>如果我们省略了其中一个字段，比如 <code>bio</code>，会发生什么呢？</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="c1"># 所有字段都是必需的，因为没有任何字段</span>
+<span class="c1"># 被标记为 `Optional`，所以我们会得到一个验证错误：</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+        <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+        <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+        <span class="n">age</span><span class="o">=</span><span class="mi">38</span>  <span class="c1"># &lt;- 我们没有传入 bio！</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ValidationError: 1 validation error for Customer</span>
+<span class="sd">    bio</span>
+<span class="sd">      field required (type=value_error.missing)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<p>如果我们希望 <code>bio</code> 字段是可选的，我们需要将类型注释更改为使用 <code>Optional</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># &lt;- 现在，bio 是一个 Optional[str]</span>
+</code></pre></div>
+<p>现在我们可以创建有或没有 <code>bio</code> 字段的 <code>Customer</code> 对象。</p>
+<h3 id="_7">默认值</h3>
+<p>字段可以有默认值。您可以通过给字段赋值来设置它们。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>  <span class="c1"># &lt;- 我们在这里添加了默认值</span>
+</code></pre></div>
+<p>现在，如果我们创建一个没有 <code>bio</code> 字段的 <code>Customer</code> 对象，它将使用默认值。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>  <span class="c1"># &lt;- 注意，我们没有提供 bio！</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">bio</span><span class="p">)</span>  <span class="c1"># &lt;- 所以我们得到了默认值。</span>
+<span class="c1"># &gt; &#39;Super Dope&#39;</span>
+</code></pre></div>
+<p>模型将在您下次调用 <code>save()</code> 时将此默认值保存到 Redis。</p>
+<h3 id="_8">自动主键</h3>
+<p>模型会自动生成一个全球唯一的主键，而无需与 Redis 进行通信。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+<span class="c1"># &gt; &#39;01FJM6PH661HCNNRC884H6K30C&#39;</span>
+</code></pre></div>
+<p>ID 在您保存模型之前就可用。</p>
+<p>默认的 ID 生成函数会创建 <a href="https://github.com/ulid/spec">ULIDs</a>，不过如果您想使用不同类型的主键，可以更改生成模型主键的函数。</p>
+<h2 id="_9">数据验证</h2>
+<p>Redis OM 使用 <a href="https://github.com/samuelcolvin/pydantic">Pydantic</a> 根据您为模型类字段分配的类型注释来验证数据。</p>
+<p>这种验证确保像 <code>first_name</code> 这样的字段在 <code>Customer</code> 模型中标记为 <code>str</code> 时始终为字符串。<strong>但每个 Redis OM 模型也是 Pydantic 模型</strong>，因此您可以使用 Pydantic 验证器，如 <code>EmailStr</code>、<code>Pattern</code> 等进行复杂验证！</p>
+<p>例如，我们之前将 <code>Customer</code> 模型的 <code>join_date</code> 定义为 <code>datetime.date</code>。因此，如果我们尝试创建一个 <code>join_date</code> 不是日期的模型，我们将得到一个验证错误。</p>
+<p>让我们现在尝试一下：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+        <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;a@example.com&quot;</span><span class="p">,</span>
+        <span class="n">join_date</span><span class="o">=</span><span class="s2">&quot;not a date!&quot;</span><span class="p">,</span>  <span class="c1"># &lt;- 问题所在行！</span>
+        <span class="n">age</span><span class="o">=</span><span class="mi">38</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    pydantic.error_wrappers.ValidationError: 1 validation error for Customer</span>
+<span class="sd">    join_date</span>
+<span class="sd">      invalid date format (type=value_error.date)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="_10">模型默认强制转换值</h3>
+<p>您可能会想，在我们上一个验证示例中，什么算作“日期”。默认情况下，Redis OM 会尝试将输入值强制转换为正确的类型。这意味着我们可以将日期字符串传递给 <code>join_date</code>，而不必传递 <code>date</code> 对象：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;a@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="s2">&quot;2020-01-02&quot;</span><span class="p">,</span>  <span class="c1"># &lt;- 我们现在传递的是 YYYY-MM-DD 日期字符串</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">join_date</span><span class="p">)</span>
+<span class="c1"># &gt; 2021-11-02</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">join_date</span><span class="p">)</span>
+<span class="c1"># &gt; datetime.date  # 模型自动解析了字符串！</span>
+</code></pre></div>
+<p>这种将解析（在此情况下为日期字符串）与验证相结合的能力可以为您节省很多工作。</p>
+<p>然而，您可以关闭强制转换——请查看下一节关于使用严格验证的内容。</p>
+<h3 id="_11">严格验证</h3>
+<p>您可以开启严格验证，以拒绝字段的值，除非它们与模型的类型注释完全匹配。</p>
+<p>您可以通过将字段的类型注释更改为使用 Pydantic 提供的 <a href="https://pydantic-docs.helpmanual.io/usage/types/#strict-types">"严格" 类型</a> 来实现这一点。</p>
+<p>Redis OM 支持 Pydantic 的所有严格类型：<code>StrictStr</code>、<code>StrictBytes</code>、<code>StrictInt</code>、<code>StrictFloat</code> 和 <code>StrictBool</code>。</p>
+<p>如果我们想确保 <code>age</code> 字段仅接受整数，并且不尝试解析包含整数的字符串，例如 "1"，我们将使用 <code>StrictInt</code> 类。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">StrictInt</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="n">StrictInt</span>  <span class="c1"># &lt;- 这里使用 StrictInt 而不是 int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="c1"># 现在如果我们对 `age` 使用字符串而不是整数，</span>
+<span class="c1"># 我们将得到一个验证错误：</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+        <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;a@example.com&quot;</span><span class="p">,</span>
+        <span class="n">join_date</span><span class="o">=</span><span class="s2">&quot;2020-01-02&quot;</span><span class="p">,</span>
+        <span class="n">age</span><span class="o">=</span><span class="s2">&quot;38&quot;</span>  <span class="c1"># &lt;- 字符串类型的年龄现在不应该有效！</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    pydantic.error_wrappers.ValidationError: 1 validation error for Customer</span>
+<span class="sd">    age</span>
+<span class="sd">      Value is not a valid integer (type=type_error.integer)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<p>Pydantic 不包含 <code>StrictDate</code> 类，但我们可以自己创建。在这个例子中，我们创建一个 <code>StrictDate</code> 类型，用于验证 <code>join_date</code> 是一个 <code>datetime.date</code> 对象。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">StrictDate</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__get_validators__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;CallableGenerator&#39;</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Value must be a datetime.date object&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">StrictDate</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="c1"># 现在如果我们对 `join_date` 使用字符串而不是日期对象，</span>
+<span class="c1"># 我们将得到一个验证错误：</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+        <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;a@example.com&quot;</span><span class="p">,</span>
+        <span class="n">join_date</span><span class="o">=</span><span class="s2">&quot;2020-01-02&quot;</span><span class="p">,</span>  <span class="c1"># &lt;- 字符串现在不应该有效！</span>
+        <span class="n">age</span><span class="o">=</span><span class="s2">&quot;38&quot;</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    pydantic.error_wrappers.ValidationError: 1 validation error for Customer</span>
+<span class="sd">    join_date</span>
+<span class="sd">      Value must be a datetime.date object (type=value_error)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h2 id="_12">保存模型</h2>
+<p>我们可以通过调用 <code>save()</code> 将模型保存到 Redis：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>
+
+<span class="n">andrew</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="_13">过期模型</h2>
+<p>我们可以使用 <code>expire</code> 方法让模型实例过期，并传入希望实例在 Redis 中过期的秒数：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 让 Andrew 在 2 分钟（120 秒）后过期</span>
+<span class="n">andrew</span><span class="o">.</span><span class="n">expire</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="redis_3">在 Redis 中检查数据</h2>
+<p>您可以查看存储在 Redis 中的任何 Redis OM 模型的数据。</p>
+<p>首先，获取您想要检查的模型实例的键。<code>key()</code> 方法将为您提供用于存储模型的确切 Redis 键。</p>
+<p><strong>注意：</strong> 这个方法的命名可能会让人困惑。这不是主键，而是该模型的 Redis 键。因此，方法名称可能会有所更改。</p>
+<p>在这个例子中，我们查看我们正在构建的 <code>Customer</code> 模型的键：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>
+
+<span class="n">andrew</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">andrew</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>
+<span class="c1"># &gt; &#39;mymodel.Customer:01FKGX1DFEV9Z2XKF59WQ6DC9T&#39;</span>
+</code></pre></div>
+<p>有了模型的 Redis 键，您可以启动 <code>redis-cli</code> 并检查该键下存储的数据。在这里，我们使用正在运行的 "redis" 容器运行 <code>JSON.GET</code> 命令，该容器由此项目的 Docker Compose 文件定义：</p>
+<div class="highlight"><pre><span></span><code>$ docker compose exec -T redis redis-cli HGETALL mymodel.Customer:01FKGX1DFEV9Z2XKF59WQ6DC9T
+
+ 1) &quot;pk&quot;
+ 2) &quot;01FKGX1DFEV9Z2XKF59WQ6DC9T&quot;
+ 3) &quot;first_name&quot;
+ 4) &quot;Andrew&quot;
+ 5) &quot;last_name&quot;
+ 6) &quot;Brookins&quot;
+ 7) &quot;email&quot;
+ 8) &quot;andrew.brookins@example.com&quot;
+ 9) &quot;join_date&quot;
+10) &quot;2021-11-02&quot;
+11) &quot;age&quot;
+12) &quot;38&quot;
+13) &quot;bio&quot;
+14) &quot;Super dope&quot;
+</code></pre></div>
+<h2 id="_14">获取模型</h2>
+<p>如果您有模型的主键，可以在模型类上调用 <code>get()</code> 方法来获取模型的数据。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Super dope&quot;</span>
+
+
+<span class="n">andrew</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+    <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span>
+    <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Brookins&quot;</span><span class="p">,</span>
+    <span class="n">email</span><span class="o">=</span><span class="s2">&quot;andrew.brookins@example.com&quot;</span><span class="p">,</span>
+    <span class="n">join_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">38</span><span class="p">)</span>
+
+<span class="n">andrew</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">Customer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">andrew</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span> <span class="o">==</span> <span class="n">andrew</span>
+</code></pre></div>
+<h2 id="_15">使用表达式查询模型</h2>
+<p>Redis OM 提供了一种丰富的查询语言，允许您使用 Python 表达式查询 Redis。</p>
+<p>为了展示这一点，我们将对之前定义的 <code>Customer</code> 模型做一个小改动。我们将添加 <code>Field(index=True)</code>，以告诉 Redis OM 我们希望为 <code>last_name</code> 和 <code>age</code> 字段建立索引：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">EmailStr</span>
+
+<span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">HashModel</span><span class="p">,</span>
+    <span class="n">Migrator</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">email</span><span class="p">:</span> <span class="n">EmailStr</span>
+    <span class="n">join_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="c1"># 现在，如果我们在安装了 RediSearch 模块的 Redis 部署中使用此模型，</span>
+<span class="c1"># 我们可以运行如下查询。</span>
+
+<span class="c1"># 在运行查询之前，我们需要运行迁移，以设置 Redis OM 将使用的索引。</span>
+<span class="c1"># 您也可以使用 `migrate` CLI 工具来实现这一点！</span>
+<span class="n">Migrator</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># 查找所有姓 &quot;Brookins&quot; 的客户</span>
+<span class="n">Customer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 查找所有不姓 &quot;Brookins&quot; 的客户</span>
+<span class="n">Customer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">last_name</span> <span class="o">!=</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c1"># 查找所有姓 &quot;Brookins&quot; 或者年龄为 100 且姓 &quot;Smith&quot; 的客户</span>
+<span class="n">Customer</span><span class="o">.</span><span class="n">find</span><span class="p">((</span><span class="n">Customer</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Brookins&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span>
+        <span class="n">Customer</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="mi">100</span>
+<span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">last_name</span> <span class="o">==</span> <span class="s2">&quot;Smith&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="_16">保存和查询布尔值</h3>
+<p>由于历史原因，<code>HashModels</code> 不支持保存和查询布尔值。然而，在 JSON 模型中，您可以使用 <code>==</code> 语法存储和查询布尔值：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">JsonModel</span><span class="p">,</span>
+    <span class="n">Migrator</span>
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Demo</span><span class="p">(</span><span class="n">JsonModel</span><span class="p">):</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Migrator</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">Demo</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Demo</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Demo</span><span class="o">.</span><span class="n">b</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="redis_4">调用其他 Redis 命令</h2>
+<p>有时您需要直接运行 Redis 命令。Redis OM 通过模型类上的 <code>db</code> 方法支持这一点。它返回一个已连接的 Redis 客户端实例，该实例为每个 Redis 命令提供一个命名函数。例如，让我们执行一些基本的集合操作：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">HashModel</span>
+
+<span class="k">class</span> <span class="nc">Demo</span><span class="p">(</span><span class="n">HashModel</span><span class="p">):</span>
+    <span class="n">some_field</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">redis_conn</span> <span class="o">=</span> <span class="n">Demo</span><span class="o">.</span><span class="n">db</span><span class="p">()</span>
+
+<span class="n">redis_conn</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="s2">&quot;myset&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">)</span>
+
+<span class="c1"># 输出 False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">redis_conn</span><span class="o">.</span><span class="n">sismember</span><span class="p">(</span><span class="s2">&quot;myset&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">))</span>
+
+<span class="c1"># 输出 True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">redis_conn</span><span class="o">.</span><span class="n">sismember</span><span class="p">(</span><span class="s2">&quot;myset&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>每个命令函数预期的参数与 <a href="https://redis.io/commands/">redis.io</a> 上命令页面中记录的参数相同。</p>
+<p>如果您不想从模型类获取 Redis 连接，您还可以使用 <code>get_redis_connection</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">redis_om</span> <span class="kn">import</span> <span class="n">get_redis_connection</span>
+
+<span class="n">redis_conn</span> <span class="o">=</span> <span class="n">get_redis_connection</span><span class="p">()</span>
+<span class="n">redis_conn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;world&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_17">下一步</h2>
+<p>现在您已经了解了使用 Redis OM 的基础知识，可以在您的项目中开始尝试它！</p>
+<p>如果您是 FastAPI 用户，请查看 <a href="../fastapi_integration/">如何将 Redis OM 集成到 FastAPI 中</a>。</p>
+<!-- Links -->
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.top", "navigation.sections", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.94c44541.min.js"></script>
+      
+    
+  </body>
+</html>
